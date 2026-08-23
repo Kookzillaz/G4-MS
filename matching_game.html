@@ -5,33 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chinese Occupations Matching Game</title>
 <style>
+  * { box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #f0f4f8;
     margin: 0;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
   .game-container {
     background: #ffffff;
     border-radius: 16px;
-    padding: 20px;
-    max-width: 480px;
+    padding: 16px;
+    max-width: 520px;
     width: 100%;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     position: relative;
   }
   .lang-switch {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 14px;
+    right: 14px;
   }
   .lang-btn {
     background: #e2e8f0;
     border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 5px 10px;
+    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
   }
@@ -42,45 +45,46 @@
   h2 {
     text-align: center;
     color: #1e293b;
-    margin-top: 10px;
-    margin-bottom: 8px;
-    font-size: 20px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 18px;
   }
   p.subtitle {
     text-align: center;
     color: #64748b;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 14px;
   }
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 8px;
   }
   .column {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
   .card {
     background: #f8fafc;
     border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px;
+    border-radius: 10px;
+    padding: 8px 6px;
     text-align: center;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     color: #334155;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s ease;
-    min-height: 48px;
+    min-height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .card.chinese {
-    font-size: 22px;
+    font-size: 18px;
   }
   .card.selected {
     border-color: #3b82f6;
@@ -92,7 +96,7 @@
     background-color: #f0fdf4;
     color: #15803d;
     cursor: default;
-    opacity: 0.6;
+    opacity: 0.5;
   }
   .card.wrong {
     border-color: #ef4444;
@@ -107,21 +111,21 @@
   }
   .status {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 12px;
     font-weight: bold;
     color: #22c55e;
-    font-size: 18px;
-    min-height: 27px;
+    font-size: 16px;
+    min-height: 22px;
   }
   button.reset-btn {
     width: 100%;
-    margin-top: 12px;
-    padding: 12px;
+    margin-top: 8px;
+    padding: 10px;
     background-color: #3b82f6;
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
   }
@@ -155,13 +159,13 @@ const i18n = {
     title: "🎮 Matching Game",
     subtitle: "Tap Chinese Character (Left) and Pinyin (Right) to match.",
     reset: "🔄 Reset Game",
-    win: "🎉 Congratulations! All matched!"
+    win: "🎉 Congratulations! All 8 matched!"
   },
   th: {
     title: "🎮 จับคู่คำศัพท์อาชีพ",
     subtitle: "แตะคำอักษรจีน (ซ้าย) แล้วแตะคำอ่าน (ขวา) ให้ตรงกัน",
     reset: "🔄 เริ่มเล่นใหม่",
-    win: "🎉 ยินดีด้วย! จับคู่ถูกต้องทั้งหมด!"
+    win: "🎉 ยินดีด้วย! จับคู่ถูกต้องทั้ง 8 คำ!"
   }
 };
 
@@ -223,7 +227,7 @@ function initGame() {
   shuffledRight.forEach(item => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerText = `${item.py} (${item[currentLang]})`;
+    card.innerText = `${item.py}\n(${item[currentLang]})`;
     card.dataset.id = item.id;
     card.onclick = () => selectRight(card);
     rightCol.appendChild(card);
