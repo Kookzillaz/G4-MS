@@ -16,7 +16,7 @@
 
   .game-card {
     background: white; border-radius: 20px; padding: 24px;
-    width: 100%; max-width: 420px;
+    width: 100%; max-width: 440px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     display: flex; flex-direction: column; align-items: center; position: relative;
   }
@@ -34,11 +34,11 @@
   }
   .progress-fill { height: 100%; background: #0284c7; width: 0%; transition: width 0.3s ease; }
 
-  .zh-display { font-size: 48px; font-weight: bold; color: #0369a1; margin-bottom: 4px; }
-  .meaning-display { font-size: 16px; color: #64748b; margin-bottom: 24px; }
+  .zh-display { font-size: 44px; font-weight: bold; color: #0369a1; margin-bottom: 4px; text-align: center; }
+  .meaning-display { font-size: 16px; color: #64748b; margin-bottom: 24px; text-align: center; }
 
-  .pinyin-container { display: flex; gap: 8px; margin-bottom: 30px; }
-  .pinyin-char-box { display: flex; flex-direction: column; align-items: center; font-size: 28px; font-weight: bold; }
+  .pinyin-container { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; justify-content: center; }
+  .pinyin-char-box { display: flex; flex-direction: column; align-items: center; font-size: 24px; font-weight: bold; margin: 0 2px; }
   .tone-slot {
     width: 36px; height: 36px; border: 2px dashed #94a3b8;
     border-radius: 8px; display: flex; align-items: center; justify-content: center;
@@ -46,10 +46,10 @@
   }
   .tone-slot.filled { border-style: solid; border-color: #0284c7; background: #e0f2fe; }
 
-  .tone-palette-title { font-size: 14px; color: #64748b; margin-bottom: 12px; }
+  .tone-palette-title { font-size: 14px; color: #64748b; margin-bottom: 12px; text-align: center; }
   .tone-palette { display: flex; gap: 12px; margin-bottom: 24px; }
   .tone-btn {
-    width: 54px; height: 54px; border-radius: 12px;
+    width: 52px; height: 52px; border-radius: 12px;
     background: #0284c7; color: white; font-size: 26px; font-weight: bold;
     display: flex; align-items: center; justify-content: center; cursor: pointer;
     box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2); user-select: none;
@@ -60,7 +60,7 @@
     width: 100%; padding: 14px; border-radius: 12px; border: none;
     background: #10b981; color: white; font-size: 18px; font-weight: bold; cursor: pointer;
   }
-  .feedback-text { margin-top: 16px; font-weight: bold; font-size: 15px; min-height: 24px; }
+  .feedback-text { margin-top: 16px; font-weight: bold; font-size: 15px; min-height: 24px; text-align: center; }
   .feedback-text.correct { color: #10b981; }
   .feedback-text.wrong { color: #ef4444; }
 </style>
@@ -101,14 +101,14 @@ const i18n = {
     checkBtn: "Check Answer", nextBtn: "Next ➔", restartBtn: "Play Again",
     correctMsg: (py) => `✨ Correct! (Pinyin: ${py})`,
     wrongMsg: "❌ Incorrect! Check the tone marks again.",
-    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing Pinyin tone marks!"
+    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing all 8 vocabulary words!"
   },
   th: {
     paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:",
     checkBtn: "ตรวจคำตอบ", nextBtn: "ข้อถัดไป ➔", restartBtn: "เริ่มเล่นใหม่อีกครั้ง",
     correctMsg: (py) => `✨ ถูกต้อง! (Pinyin: ${py})`,
     wrongMsg: "❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!",
-    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทุกคำแล้ว!"
+    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทั้ง 8 คำแล้ว!"
   }
 };
 
@@ -118,7 +118,9 @@ const vocabData = [
   { zh: "司机", en: "Driver", th: "คนขับรถ", fullPy: "sījī", chars: [{ text: "s i", tone: "ˉ" }, { text: "j i", tone: "ˉ" }] },
   { zh: "医生", en: "Doctor", th: "หมอ", fullPy: "yīshēng", chars: [{ text: "y i", tone: "ˉ" }, { text: "s h e n g", tone: "ˉ" }] },
   { zh: "护士", en: "Nurse", th: "พยาบาล", fullPy: "hùshi", chars: [{ text: "h u", tone: "ˋ" }, { text: "s h i", tone: "" }] },
-  { zh: "职员", en: "Office Worker", th: "พนักงานบริษัท", fullPy: "zhíyuán", chars: [{ text: "z h i", tone: "ˊ" }, { text: "y u a n", tone: "ˊ" }] }
+  { zh: "职员", en: "Company Employee", th: "พนักงานบริษัท", fullPy: "zhíyuán", chars: [{ text: "z h i", tone: "ˊ" }, { text: "y u a n", tone: "ˊ" }] },
+  { zh: "公务员", en: "Government Officer", th: "ข้าราชการ", fullPy: "gōngwùyuán", chars: [{ text: "g o n g", tone: "ˉ" }, { text: "w u", tone: "ˋ" }, { text: "y u a n", tone: "ˊ" }] },
+  { zh: "全职妈妈", en: "Housekeeper", th: "แม่บ้าน", fullPy: "quánzhí māma", chars: [{ text: "q u a n", tone: "ˊ" }, { text: "z h i", tone: "ˊ" }, { text: "m a", tone: "ˉ" }, { text: "m a", tone: "" }] }
 ];
 
 let currentIndex = 0, selectedToneMark = null, userTones = [];
