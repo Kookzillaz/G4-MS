@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Pinyin Tone Drag & Drop - เกมลากวางวรรณยุกต์</title>
+<style>
+  * { box-sizing: border-box; touch-action: manipulation; }
+  body {
+    margin: 0; padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f0f9ff;
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .game-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #0284c7;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .zh-display {
+    font-size: 48px;
+    font-weight: bold;
+    color: #0369a1;
+    margin-bottom: 4px;
+  }
+  .meaning-display {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+
+  /* Pinyin Slots Area */
+  .pinyin-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+  .pinyin-char-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .tone-slot {
+    width: 36px;
+    height: 36px;
+    border: 2px dashed #94a3b8;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #0284c7;
+    background: #f8fafc;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .tone-slot.filled {
+    border-style: solid;
+    border-color: #0284c7;
+    background: #e0f2fe;
+  }
+  .tone-slot.active-target {
+    border-color: #f59e0b;
+    background: #fef3c7;
+  }
+
+  /* Tone Palette */
+  .tone-palette-title {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 12px;
+  }
+  .tone-palette {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .tone-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    background: #0284c7;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2);
+    user-select: none;
+  }
+  .tone-btn:active { transform: scale(0.95); }
+  .tone-btn.selected {
+    background: #f59e0b;
+    box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
+  }
+
+  /* Action Buttons */
+  .action-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #10b981;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  }
+  .action-btn:active { background: #059669; }
+
+  .feedback-text {
+    margin-top: 16px;
+    font-weight: bold;
+    font-size: 16px;
+    min-height: 24px;
+  }
+  .feedback-text.correct { color: #10b981; }
+  .feedback-text.wrong { color: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="game-card">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <div class="zh-display" id="zh-display">警察</div>
+  <div class="meaning-display" id="meaning-display">ตำรวจ</div>
+
+  <div class="pinyin-container" id="pinyin-container"></div>
+
+  <div class="tone-palette-title">แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:</div>
+  <div class="tone-palette">
+    <div class="tone-btn" onclick="selectTone('ˉ', this)">ˉ</div>
+    <div class="tone-btn" onclick="selectTone('ˊ', this)">ˊ</div>
+    <div class="tone-btn" onclick="selectTone('ˇ', this)">ˇ</div>
+    <div class="tone-btn" onclick="selectTone('ˋ', this)">ˋ</div>
+  </div>
+
+  <button class="action-btn" id="action-btn" onclick="checkAnswer()">ตรวจคำตอบ</button>
+  <div class="feedback-text" id="feedback"></div>
+</div>
+
+<script>
+const vocabData = [
+  { 
+    zh: "警察", meaning: "ตำรวจ", fullPy: "jǐngchá",
+    chars: [
+      { text: "j i n g", vowelIdx: 1, tone: "ˇ" },
+      { text: "c h a", vowelIdx: 2, tone: "ˊ" }
+    ]
+  },
+  { 
+    zh: "厨师", meaning: "พ่อครัว", fullPy: "chúshī",
+    chars: [
+      { text: "c h u", vowelIdx: 2, tone: "ˊ" },
+      { text: "s h i", vowelIdx: 2, tone: "ˉ" }
+    ]
+  },
+  { 
+    zh: "司机", meaning: "คนขับรถ", fullPy: "sījī",
+    chars: [
+      { text: "s i", vowelIdx: 1, tone: "ˉ" },
+      { text: "j i", vowelIdx: 1, tone: "ˉ" }
+    ]
+  },
+  { 
+    zh: "医生", meaning: "หมอ", fullPy: "yīshēng",
+    chars: [
+      { text: "y i", vowelIdx: 1, tone: "ˉ" },
+      { text: "s h e n g", vowelIdx: 2, tone: "ˉ" }
+    ]
+  },
+  { 
+    zh: "护士", meaning: "พยาบาล", fullPy: "hùshi",
+    chars: [
+      { text: "h u", vowelIdx: 1, tone: "ˋ" },
+      { text: "s h i", vowelIdx: -1, tone: "" } // ไม่มีวรรณยุกต์ (เสียงเบา)
+    ]
+  },
+  { 
+    zh: "职员", meaning: "พนักงานบริษัท", fullPy: "zhíyuán",
+    chars: [
+      { text: "z h i", vowelIdx: 2, tone: "ˊ" },
+      { text: "y u a n", vowelIdx: 2, tone: "ˊ" }
+    ]
+  }
+];
+
+let currentIndex = 0;
+let selectedToneMark = null;
+let userTones = [];
+
+function loadQuestion() {
+  const q = vocabData[currentIndex];
+  document.getElementById('zh-display').innerText = q.zh;
+  document.getElementById('meaning-display').innerText = q.meaning;
+  document.getElementById('feedback').innerText = '';
+  document.getElementById('action-btn').innerText = 'ตรวจคำตอบ';
+  document.getElementById('action-btn').onclick = checkAnswer;
+  
+  // Update progress
+  const progPct = (currentIndex / vocabData.length) * 100;
+  document.getElementById('progress').style.width = progPct + '%';
+
+  const container = document.getElementById('pinyin-container');
+  container.innerHTML = '';
+  userTones = new Array(q.chars.length).fill('');
+
+  q.chars.forEach((c, charIdx) => {
+    const box = document.createElement('div');
+    box.className = 'pinyin-char-box';
+
+    const slot = document.createElement('div');
+    slot.className = 'tone-slot';
+    slot.dataset.idx = charIdx;
+    slot.onclick = () => applyToneToSlot(slot, charIdx);
+
+    const label = document.createElement('div');
+    label.innerText = c.text;
+
+    box.appendChild(slot);
+    box.appendChild(label);
+    container.appendChild(box);
+  });
+}
+
+function selectTone(tone, btn) {
+  selectedToneMark = tone;
+  document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function applyToneToSlot(slot, idx) {
+  if (selectedToneMark) {
+    slot.innerText = selectedToneMark;
+    slot.classList.add('filled');
+    userTones[idx] = selectedToneMark;
+  } else {
+    // If no tone selected, clear it
+    slot.innerText = '';
+    slot.classList.remove('filled');
+    userTones[idx] = '';
+  }
+}
+
+function checkAnswer() {
+  const q = vocabData[currentIndex];
+  let isCorrect = true;
+
+  q.chars.forEach((c, idx) => {
+    if (c.tone !== userTones[idx]) {
+      isCorrect = false;
+    }
+  });
+
+  const feedback = document.getElementById('feedback');
+  if (isCorrect) {
+    feedback.className = 'feedback-text correct';
+    feedback.innerText = `✨ ถูกต้อง! (Pinyin: ${q.fullPy})`;
+    
+    document.getElementById('action-btn').innerText = 'ข้อถัดไป ➔';
+    document.getElementById('action-btn').onclick = nextQuestion;
+  } else {
+    feedback.className = 'feedback-text wrong';
+    feedback.innerText = '❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!';
+  }
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= vocabData.length) {
+    document.getElementById('zh-display').innerText = '🎉';
+    document.getElementById('meaning-display').innerText = 'ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทุกคำแล้ว!';
+    document.getElementById('pinyin-container').innerHTML = '';
+    document.getElementById('feedback').innerText = '';
+    document.getElementById('action-btn').innerText = 'เริ่มเล่นใหม่อีกครั้ง';
+    document.getElementById('action-btn').onclick = () => {
+      currentIndex = 0;
+      loadQuestion();
+    };
+  } else {
+    loadQuestion();
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
