@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เกมจับคู่คำศัพท์อาชีพภาษาจีน</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .game-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  h2 {
+    text-align: center;
+    color: #1e293b;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+  p.subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card.chinese {
+    font-size: 22px;
+  }
+  .card.selected {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+  }
+  .card.matched {
+    border-color: #22c55e;
+    background-color: #f0fdf4;
+    color: #15803d;
+    cursor: default;
+    opacity: 0.6;
+  }
+  .card.wrong {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    color: #b91c1c;
+    animation: shake 0.3s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .status {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #22c55e;
+    font-size: 18px;
+    min-height: 27px;
+  }
+  button.reset-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button.reset-btn:active {
+    background-color: #2563eb;
+  }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <h2>🎮 จับคู่คำศัพท์อาชีพ</h2>
+  <p class="subtitle">แตะคำอักษรจีน (ซ้าย) แล้วแตะคำอ่าน (ขวา) ให้ตรงกัน</p>
+  
+  <div class="grid">
+    <div class="column" id="left-col"></div>
+    <div class="column" id="right-col"></div>
+  </div>
+
+  <div class="status" id="status-text"></div>
+  <button class="reset-btn" onclick="initGame()">🔄 เริ่มเล่นใหม่</button>
+</div>
+
+<script>
+const vocabList = [
+  { id: 1, zh: "警察", py: "jǐngchá (ตำรวจ)" },
+  { id: 2, zh: "厨师", py: "chúshī (พ่อครัว)" },
+  { id: 3, zh: "司机", py: "sījī (คนขับรถ)" },
+  { id: 4, zh: "医生", py: "yīshēng (หมอ)" },
+  { id: 5, zh: "护士", py: "hùshi (พยาบาล)" },
+  { id: 6, zh: "职员", py: "zhíyuán (พนักงานบริษัท)" },
+  { id: 7, zh: "公务员", py: "gōngwùyuán (ข้าราชการ)" }
+];
+
+let selectedLeft = null;
+let selectedRight = null;
+let matchedCount = 0;
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function initGame() {
+  const leftCol = document.getElementById('left-col');
+  const rightCol = document.getElementById('right-col');
+  const statusText = document.getElementById('status-text');
+  
+  leftCol.innerHTML = '';
+  rightCol.innerHTML = '';
+  statusText.innerText = '';
+  selectedLeft = null;
+  selectedRight = null;
+  matchedCount = 0;
+
+  const shuffledLeft = shuffle([...vocabList]);
+  const shuffledRight = shuffle([...vocabList]);
+
+  shuffledLeft.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card chinese';
+    card.innerText = item.zh;
+    card.dataset.id = item.id;
+    card.onclick = () => selectLeft(card);
+    leftCol.appendChild(card);
+  });
+
+  shuffledRight.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerText = item.py;
+    card.dataset.id = item.id;
+    card.onclick = () => selectRight(card);
+    rightCol.appendChild(card);
+  });
+}
+
+function selectLeft(card) {
+  if (card.classList.contains('matched')) return;
+  
+  document.querySelectorAll('#left-col .card').forEach(c => {
+    if (!c.classList.contains('matched')) c.className = 'card chinese';
+  });
+  
+  card.classList.add('selected');
+  selectedLeft = card;
+  checkMatch();
+}
+
+function selectRight(card) {
+  if (card.classList.contains('matched')) return;
+  
+  document.querySelectorAll('#right-col .card').forEach(c => {
+    if (!c.classList.contains('matched')) c.className = 'card';
+  });
+  
+  card.classList.add('selected');
+  selectedRight = card;
+  checkMatch();
+}
+
+function checkMatch() {
+  if (selectedLeft && selectedRight) {
+    if (selectedLeft.dataset.id === selectedRight.dataset.id) {
+      selectedLeft.className = 'card chinese matched';
+      selectedRight.className = 'card matched';
+      selectedLeft = null;
+      selectedRight = null;
+      matchedCount++;
+      
+      if (matchedCount === vocabList.length) {
+        document.getElementById('status-text').innerText = '🎉 ยินดีด้วย! จับคู่ถูกต้องทั้งหมด!';
+      }
+    } else {
+      const leftObj = selectedLeft;
+      const rightObj = selectedRight;
+      
+      leftObj.className = 'card chinese wrong';
+      rightObj.className = 'card wrong';
+      
+      setTimeout(() => {
+        if (!leftObj.classList.contains('matched')) leftObj.className = 'card chinese';
+        if (!rightObj.classList.contains('matched')) rightObj.className = 'card';
+      }, 500);
+      
+      selectedLeft = null;
+      selectedRight = null;
+    }
+  }
+}
+
+initGame();
+</script>
+
+</body>
+</html>
