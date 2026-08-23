@@ -15,13 +15,14 @@
     overflow: hidden;
   }
 
-  /* Main Wrapper */
   .main-wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for iPad / Mobile browsers */
+    height: 100dvh;
     position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
   }
   
   /* Top Bar */
@@ -30,90 +31,96 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px 24px;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
     z-index: 10;
     flex-shrink: 0;
   }
-  .score-box, .lives-box { font-size: 20px; font-weight: bold; }
+  .score-box, .lives-box { font-size: 22px; font-weight: bold; }
   .lives-box { color: #ef4444; }
 
-  /* Game Area */
+  /* Game Area with safe container boundaries */
   .game-area {
     flex: 1;
     position: relative;
     overflow: hidden;
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
-  /* Falling Target */
+  /* Target Wrapper inside Game Area */
   .falling-target {
     position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
+    top: 0;
     background: rgba(255, 255, 255, 0.15);
-    border: 2px solid #a855f7;
-    backdrop-filter: blur(8px);
-    padding: 16px 32px;
-    border-radius: 20px;
+    border: 3px solid #a855f7;
+    backdrop-filter: blur(12px);
+    padding: 16px 40px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.3);
-    z-index: 5;
+    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.4);
     pointer-events: none;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
   }
-  .target-zh { font-size: 42px; font-weight: bold; color: #fef08a; line-height: 1.2; }
-  .target-meaning { font-size: 18px; color: #e9d5ff; margin-top: 4px; }
+  .target-zh { font-size: 52px; font-weight: bold; color: #fef08a; line-height: 1.1; }
+  .target-meaning { font-size: 20px; color: #e9d5ff; margin-top: 6px; font-weight: 500; }
 
-  /* Bottom Bubble Zone */
+  /* Fixed Bottom Bubble Zone */
   .bubble-zone {
-    height: 120px;
+    height: 140px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 0 20px 20px 20px;
+    padding: 10px 20px 24px 20px;
+    background: rgba(15, 23, 42, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 10;
   }
   .bubble {
-    width: 90px; height: 90px;
+    width: 96px; height: 96px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #38bdf8, #0284c7);
     box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4), inset 0 2px 4px rgba(255,255,255,0.6);
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: bold; color: white;
+    font-size: 22px; font-weight: bold; color: white;
     cursor: pointer; user-select: none;
-    transition: transform 0.1s;
   }
   .bubble:active { transform: scale(0.92); }
 
   /* Overlay Screens */
   .overlay {
     position: absolute; inset: 0;
-    background: rgba(15, 23, 42, 0.92);
+    background: rgba(15, 23, 42, 0.95);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    z-index: 20; padding: 20px; text-align: center;
+    z-index: 20; padding: 24px; text-align: center;
   }
-  .overlay h1 { color: #fef08a; margin-bottom: 12px; font-size: 32px; }
+  .overlay h1 { color: #fef08a; margin-bottom: 12px; font-size: 36px; }
   .btn {
     background: #8b5cf6; color: white; border: none;
-    padding: 16px 36px; font-size: 20px; font-weight: bold;
-    border-radius: 14px; cursor: pointer; margin-top: 20px;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    padding: 16px 40px; font-size: 22px; font-weight: bold;
+    border-radius: 16px; cursor: pointer; margin-top: 24px;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
   }
-  .btn:active { background: #7c3aed; }
   
   .speed-select { margin-top: 20px; display: flex; gap: 12px; }
   .speed-btn {
     background: #334155; color: white; border: 2px solid #475569;
-    padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 16px;
+    padding: 10px 24px; border-radius: 12px; cursor: pointer; font-size: 18px;
   }
   .speed-btn.active { border-color: #38bdf8; background: #0284c7; }
   
   .lang-switch { position: absolute; top: 16px; right: 20px; z-index: 30; }
   .lang-btn {
     background: rgba(255,255,255,0.2); color: white;
-    border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; font-size: 16px;
+    border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; font-size: 16px;
     cursor: pointer;
   }
   .lang-btn.active { background: #8b5cf6; }
@@ -143,7 +150,7 @@
       <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">TH</button>
     </div>
     <h1>🎈 Pinyin Bubble Pop</h1>
-    <p id="start-desc" style="font-size: 18px; max-width: 400px; color: #cbd5e1;">Tap the correct Pinyin bubble before the word hits the ground!</p>
+    <p id="start-desc" style="font-size: 20px; max-width: 480px; color: #cbd5e1; line-height: 1.4;">Tap the correct Pinyin bubble before the word hits the ground!</p>
     
     <div class="speed-select">
       <button class="speed-btn active" id="spd-slow" onclick="setSpeed(1, this)">Slow</button>
@@ -157,7 +164,7 @@
   <!-- Game Over Overlay -->
   <div class="overlay" id="gameover-screen" style="display: none;">
     <h1 id="go-title">💥 Game Over!</h1>
-    <p id="final-score" style="font-size: 24px; margin-bottom: 10px; color: #e2e8f0;"></p>
+    <p id="final-score" style="font-size: 26px; margin-bottom: 12px; color: #e2e8f0;"></p>
     <button class="btn" id="restart-btn" onclick="startGame()">Play Again</button>
   </div>
 </div>
@@ -235,9 +242,10 @@ function nextTurn() {
   const targetEl = document.getElementById('target');
   document.getElementById('target-zh').innerText = currentWord.zh;
   document.getElementById('target-meaning').innerText = currentWord[currentLang];
-  targetEl.style.display = 'block';
+  targetEl.style.display = 'flex';
+  
   targetPos = 0;
-  targetEl.style.top = '0px';
+  targetEl.style.transform = `translateY(${targetPos}px)`;
 
   const wrongOptions = vocabList.filter(v => v.py !== currentWord.py);
   const options = shuffle([currentWord, ...shuffle(wrongOptions).slice(0, 2)]);
@@ -252,13 +260,13 @@ function nextTurn() {
     container.appendChild(bubble);
   });
 
-  // Dynamically calculate bottom threshold based on container height
+  // Calculate strict bottom limit inside game-area
   const gameArea = document.getElementById('game-area');
   const maxDropHeight = gameArea.clientHeight - targetEl.offsetHeight - 10;
   
   function drop() {
-    targetPos += (1.0 * speedFactor);
-    targetEl.style.top = targetPos + 'px';
+    targetPos += (1.2 * speedFactor);
+    targetEl.style.transform = `translateY(${targetPos}px)`;
     
     if (targetPos >= maxDropHeight) {
       handleMiss();
