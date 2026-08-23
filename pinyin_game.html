@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Pinyin Bubble Pop - เกมยิงลูกโป่งพินอิน</title>
+<title>Pinyin Bubble Pop</title>
 <style>
   * { box-sizing: border-box; touch-action: manipulation; }
   body {
@@ -17,7 +17,6 @@
     flex-direction: column;
   }
   
-  /* Header UI */
   .top-bar {
     display: flex;
     justify-content: space-between;
@@ -30,18 +29,11 @@
   .score-box, .lives-box { font-size: 18px; font-weight: bold; }
   .lives-box { color: #ef4444; }
 
-  /* Game Arena */
-  .game-area {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
+  .game-area { flex: 1; position: relative; overflow: hidden; }
 
-  /* Falling Character Box */
   .falling-target {
     position: absolute;
-    top: 0;
-    left: 50%;
+    top: 0; left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.15);
     border: 2px solid #a855f7;
@@ -54,7 +46,6 @@
   .target-zh { font-size: 36px; font-weight: bold; color: #fef08a; }
   .target-meaning { font-size: 14px; color: #e9d5ff; margin-top: 4px; }
 
-  /* Bubbles */
   .bubble-container {
     position: absolute;
     bottom: 20px;
@@ -64,125 +55,130 @@
     padding: 0 10px;
   }
   .bubble {
-    width: 80px;
-    height: 80px;
+    width: 80px; height: 80px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #38bdf8, #0284c7);
     box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4), inset 0 2px 4px rgba(255,255,255,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.1s;
-    user-select: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: bold; color: white;
+    cursor: pointer; user-select: none;
   }
-  .bubble:active { transform: scale(0.9); }
 
-  /* Overlay Screens */
   .overlay {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: rgba(15, 23, 42, 0.9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 20;
-    padding: 20px;
-    text-align: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 20; padding: 20px; text-align: center;
   }
   .overlay h1 { color: #fef08a; margin-bottom: 10px; font-size: 28px; }
   .btn {
-    background: #8b5cf6;
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-top: 15px;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    background: #8b5cf6; color: white; border: none;
+    padding: 14px 28px; font-size: 18px; font-weight: bold;
+    border-radius: 12px; cursor: pointer; margin-top: 15px;
   }
-  .btn:active { background: #7c3aed; }
-  
-  .speed-select {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-  }
+  .speed-select { margin-top: 15px; display: flex; gap: 10px; }
   .speed-btn {
-    background: #334155;
-    color: white;
-    border: 2px solid #475569;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
+    background: #334155; color: white; border: 2px solid #475569;
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
   }
-  .speed-btn.active {
-    border-color: #38bdf8;
-    background: #0284c7;
+  .speed-btn.active { border-color: #38bdf8; background: #0284c7; }
+  
+  .lang-switch { position: absolute; top: 12px; right: 20px; z-index: 30; }
+  .lang-btn {
+    background: rgba(255,255,255,0.2); color: white;
+    border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold;
   }
+  .lang-btn.active { background: #8b5cf6; }
 </style>
 </head>
 <body>
 
 <div class="top-bar">
-  <div class="score-box">คะแนน: <span id="score">0</span></div>
+  <div class="score-box"><span id="lbl-score">Score</span>: <span id="score">0</span></div>
   <div class="lives-box" id="lives">❤️❤️❤️</div>
 </div>
 
 <div class="game-area" id="game-area">
   <div class="falling-target" id="target" style="display: none;">
     <div class="target-zh" id="target-zh">警察</div>
-    <div class="target-meaning" id="target-meaning">ตำรวจ</div>
+    <div class="target-meaning" id="target-meaning">Police</div>
   </div>
-
   <div class="bubble-container" id="bubble-container"></div>
 </div>
 
 <!-- Start Overlay -->
 <div class="overlay" id="start-screen">
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+    <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">TH</button>
+  </div>
   <h1>🎈 Pinyin Bubble Pop</h1>
-  <p>แตะลูกโป่ง Pinyin ที่ถูกต้องก่อนตัวอักษรตกถึงพื้น!</p>
+  <p id="start-desc">Tap the correct Pinyin bubble before the word hits the ground!</p>
   
   <div class="speed-select">
-    <button class="speed-btn active" onclick="setSpeed(1, this)">ช้า</button>
-    <button class="speed-btn" onclick="setSpeed(1.5, this)">ปกติ</button>
-    <button class="speed-btn" onclick="setSpeed(2.2, this)">เร็ว</button>
+    <button class="speed-btn active" id="spd-slow" onclick="setSpeed(1, this)">Slow</button>
+    <button class="speed-btn" id="spd-norm" onclick="setSpeed(1.5, this)">Normal</button>
+    <button class="speed-btn" id="spd-fast" onclick="setSpeed(2.2, this)">Fast</button>
   </div>
 
-  <button class="btn" onclick="startGame()">เริ่มเล่นเลย!</button>
+  <button class="btn" id="start-btn" onclick="startGame()">Start Game</button>
 </div>
 
 <!-- Game Over Overlay -->
 <div class="overlay" id="gameover-screen" style="display: none;">
-  <h1>💥 จบเกม!</h1>
+  <h1 id="go-title">💥 Game Over!</h1>
   <p id="final-score" style="font-size: 22px; margin-bottom: 10px;"></p>
-  <button class="btn" onclick="startGame()">เล่นอีกครั้ง</button>
+  <button class="btn" id="restart-btn" onclick="startGame()">Play Again</button>
 </div>
 
 <script>
+let currentLang = 'en';
+
+const i18n = {
+  en: {
+    score: "Score",
+    startDesc: "Tap the correct Pinyin bubble before the word hits the ground!",
+    slow: "Slow", norm: "Normal", fast: "Fast",
+    start: "Start Game", goTitle: "💥 Game Over!", replay: "Play Again",
+    finalScore: (s) => `Your Score: ${s}`
+  },
+  th: {
+    score: "คะแนน",
+    startDesc: "แตะลูกโป่ง Pinyin ที่ถูกต้องก่อนตัวอักษรตกถึงพื้น!",
+    slow: "ช้า", norm: "ปกติ", fast: "เร็ว",
+    start: "เริ่มเล่นเลย!", goTitle: "💥 จบเกม!", replay: "เล่นอีกครั้ง",
+    finalScore: (s) => `คุณทำได้ ${s} คะแนน!`
+  }
+};
+
 const vocabList = [
-  { zh: "警察", py: "jǐngchá", meaning: "ตำรวจ" },
-  { zh: "厨师", py: "chúshī", meaning: "พ่อครัว" },
-  { zh: "司机", py: "sījī", meaning: "คนขับรถ" },
-  { zh: "医生", py: "yīshēng", meaning: "หมอ" },
-  { zh: "护士", py: "hùshi", meaning: "พยาบาล" },
-  { zh: "职员", py: "zhíyuán", meaning: "พนักงานบริษัท" },
-  { zh: "公务员", py: "gōngwùyuán", meaning: "ข้าราชการ" },
-  { zh: "全职妈妈", py: "quánzhí māma", meaning: "แม่บ้าน" }
+  { zh: "警察", py: "jǐngchá", en: "Police", th: "ตำรวจ" },
+  { zh: "厨师", py: "chúshī", en: "Chef", th: "พ่อครัว" },
+  { zh: "司机", py: "sījī", en: "Driver", th: "คนขับรถ" },
+  { zh: "医生", py: "yīshēng", en: "Doctor", th: "หมอ" },
+  { zh: "护士", py: "hùshi", en: "Nurse", th: "พยาบาล" },
+  { zh: "职员", py: "zhíyuán", en: "Office Worker", th: "พนักงานบริษัท" },
+  { zh: "公务员", py: "gōngwùyuán", en: "Civil Servant", th: "ข้าราชการ" },
+  { zh: "全职妈妈", py: "quánzhí māma", en: "Homemaker", th: "แม่บ้าน" }
 ];
 
-let score = 0;
-let lives = 3;
-let speedFactor = 1;
-let currentWord = null;
-let animId = null;
-let targetPos = 0;
+let score = 0, lives = 3, speedFactor = 1, currentWord = null, animId = null, targetPos = 0;
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-th').classList.toggle('active', lang === 'th');
+  
+  document.getElementById('lbl-score').innerText = i18n[lang].score;
+  document.getElementById('start-desc').innerText = i18n[lang].startDesc;
+  document.getElementById('spd-slow').innerText = i18n[lang].slow;
+  document.getElementById('spd-norm').innerText = i18n[lang].norm;
+  document.getElementById('spd-fast').innerText = i18n[lang].fast;
+  document.getElementById('start-btn').innerText = i18n[lang].start;
+  document.getElementById('go-title').innerText = i18n[lang].goTitle;
+  document.getElementById('restart-btn').innerText = i18n[lang].replay;
+}
 
 function setSpeed(speed, btn) {
   speedFactor = speed;
@@ -191,47 +187,33 @@ function setSpeed(speed, btn) {
 }
 
 function startGame() {
-  score = 0;
-  lives = 3;
+  score = 0; lives = 3;
   document.getElementById('score').innerText = score;
   updateLivesDisplay();
-  
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('gameover-screen').style.display = 'none';
-  
   nextTurn();
 }
 
-function updateLivesDisplay() {
-  document.getElementById('lives').innerText = '❤️'.repeat(lives);
-}
-
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+function updateLivesDisplay() { document.getElementById('lives').innerText = '❤️'.repeat(lives); }
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
 function nextTurn() {
   cancelAnimationFrame(animId);
-  
-  // Random current target
   currentWord = vocabList[Math.floor(Math.random() * vocabList.length)];
   
   const targetEl = document.getElementById('target');
   document.getElementById('target-zh').innerText = currentWord.zh;
-  document.getElementById('target-meaning').innerText = currentWord.meaning;
+  document.getElementById('target-meaning').innerText = currentWord[currentLang];
   targetEl.style.display = 'block';
-  
   targetPos = 0;
   targetEl.style.top = '0px';
 
-  // Setup Bubbles (1 correct, 2 wrong)
   const wrongOptions = vocabList.filter(v => v.py !== currentWord.py);
-  const shuffledWrong = shuffle(wrongOptions).slice(0, 2);
-  const options = shuffle([currentWord, ...shuffledWrong]);
+  const options = shuffle([currentWord, ...shuffle(wrongOptions).slice(0, 2)]);
 
   const container = document.getElementById('bubble-container');
   container.innerHTML = '';
-  
   options.forEach(opt => {
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
@@ -240,21 +222,13 @@ function nextTurn() {
     container.appendChild(bubble);
   });
 
-  // Start Animation
   const gameAreaHeight = document.getElementById('game-area').clientHeight - 160;
-  
   function drop() {
     targetPos += 0.8 * speedFactor;
     targetEl.style.top = targetPos + 'px';
-
-    if (targetPos >= gameAreaHeight) {
-      // Missed
-      handleMiss();
-    } else {
-      animId = requestAnimationFrame(drop);
-    }
+    if (targetPos >= gameAreaHeight) handleMiss();
+    else animId = requestAnimationFrame(drop);
   }
-  
   animId = requestAnimationFrame(drop);
 }
 
@@ -263,25 +237,21 @@ function checkAnswer(selectedPy) {
     score += 10;
     document.getElementById('score').innerText = score;
     nextTurn();
-  } else {
-    handleMiss();
-  }
+  } else handleMiss();
 }
 
 function handleMiss() {
   lives--;
   updateLivesDisplay();
-  
   if (lives <= 0) {
     cancelAnimationFrame(animId);
     document.getElementById('target').style.display = 'none';
-    document.getElementById('final-score').innerText = `คุณทำได้ ${score} คะแนน!`;
+    document.getElementById('final-score').innerText = i18n[currentLang].finalScore(score);
     document.getElementById('gameover-screen').style.display = 'flex';
-  } else {
-    nextTurn();
-  }
+  } else nextTurn();
 }
-</script>
 
+setLanguage('en');
+</script>
 </body>
 </html>
