@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Pinyin Tone Drag & Drop - เกมลากวางวรรณยุกต์</title>
+<title>Pinyin Tone Drag & Drop</title>
 <style>
   * { box-sizing: border-box; touch-action: manipulation; }
   body {
@@ -11,142 +11,56 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #f0f9ff;
     color: #1e293b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; min-height: 100vh;
   }
 
   .game-card {
-    background: white;
-    border-radius: 20px;
-    padding: 24px;
-    width: 100%;
-    max-width: 420px;
+    background: white; border-radius: 20px; padding: 24px;
+    width: 100%; max-width: 420px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+    display: flex; flex-direction: column; align-items: center; position: relative;
   }
+
+  .lang-switch { position: absolute; top: 16px; right: 16px; }
+  .lang-btn {
+    background: #e2e8f0; border: none; padding: 4px 10px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+  }
+  .lang-btn.active { background: #0284c7; color: white; }
 
   .progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #e2e8f0;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    overflow: hidden;
+    width: 100%; height: 8px; background: #e2e8f0;
+    border-radius: 4px; margin-top: 24px; margin-bottom: 20px; overflow: hidden;
   }
-  .progress-fill {
-    height: 100%;
-    background: #0284c7;
-    width: 0%;
-    transition: width 0.3s ease;
-  }
+  .progress-fill { height: 100%; background: #0284c7; width: 0%; transition: width 0.3s ease; }
 
-  .zh-display {
-    font-size: 48px;
-    font-weight: bold;
-    color: #0369a1;
-    margin-bottom: 4px;
-  }
-  .meaning-display {
-    font-size: 16px;
-    color: #64748b;
-    margin-bottom: 24px;
-  }
+  .zh-display { font-size: 48px; font-weight: bold; color: #0369a1; margin-bottom: 4px; }
+  .meaning-display { font-size: 16px; color: #64748b; margin-bottom: 24px; }
 
-  /* Pinyin Slots Area */
-  .pinyin-container {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 30px;
-  }
-  .pinyin-char-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 28px;
-    font-weight: bold;
-  }
+  .pinyin-container { display: flex; gap: 8px; margin-bottom: 30px; }
+  .pinyin-char-box { display: flex; flex-direction: column; align-items: center; font-size: 28px; font-weight: bold; }
   .tone-slot {
-    width: 36px;
-    height: 36px;
-    border: 2px dashed #94a3b8;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    color: #0284c7;
-    background: #f8fafc;
-    margin-bottom: 4px;
-    cursor: pointer;
+    width: 36px; height: 36px; border: 2px dashed #94a3b8;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #0284c7; background: #f8fafc; margin-bottom: 4px; cursor: pointer;
   }
-  .tone-slot.filled {
-    border-style: solid;
-    border-color: #0284c7;
-    background: #e0f2fe;
-  }
-  .tone-slot.active-target {
-    border-color: #f59e0b;
-    background: #fef3c7;
-  }
+  .tone-slot.filled { border-style: solid; border-color: #0284c7; background: #e0f2fe; }
 
-  /* Tone Palette */
-  .tone-palette-title {
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 12px;
-  }
-  .tone-palette {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
+  .tone-palette-title { font-size: 14px; color: #64748b; margin-bottom: 12px; }
+  .tone-palette { display: flex; gap: 12px; margin-bottom: 24px; }
   .tone-btn {
-    width: 54px;
-    height: 54px;
-    border-radius: 12px;
-    background: #0284c7;
-    color: white;
-    font-size: 26px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2);
-    user-select: none;
+    width: 54px; height: 54px; border-radius: 12px;
+    background: #0284c7; color: white; font-size: 26px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: 0 4px 6px rgba(2, 132, 199, 0.2); user-select: none;
   }
-  .tone-btn:active { transform: scale(0.95); }
-  .tone-btn.selected {
-    background: #f59e0b;
-    box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
-  }
+  .tone-btn.selected { background: #f59e0b; }
 
-  /* Action Buttons */
   .action-btn {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: none;
-    background: #10b981;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    width: 100%; padding: 14px; border-radius: 12px; border: none;
+    background: #10b981; color: white; font-size: 18px; font-weight: bold; cursor: pointer;
   }
-  .action-btn:active { background: #059669; }
-
-  .feedback-text {
-    margin-top: 16px;
-    font-weight: bold;
-    font-size: 16px;
-    min-height: 24px;
-  }
+  .feedback-text { margin-top: 16px; font-weight: bold; font-size: 15px; min-height: 24px; }
   .feedback-text.correct { color: #10b981; }
   .feedback-text.wrong { color: #ef4444; }
 </style>
@@ -154,16 +68,19 @@
 <body>
 
 <div class="game-card">
-  <div class="progress-bar">
-    <div class="progress-fill" id="progress"></div>
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+    <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">TH</button>
   </div>
 
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
   <div class="zh-display" id="zh-display">警察</div>
-  <div class="meaning-display" id="meaning-display">ตำรวจ</div>
+  <div class="meaning-display" id="meaning-display">Police</div>
 
   <div class="pinyin-container" id="pinyin-container"></div>
 
-  <div class="tone-palette-title">แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:</div>
+  <div class="tone-palette-title" id="palette-title">Tap tone mark, then tap slot above vowel:</div>
   <div class="tone-palette">
     <div class="tone-btn" onclick="selectTone('ˉ', this)">ˉ</div>
     <div class="tone-btn" onclick="selectTone('ˊ', this)">ˊ</div>
@@ -171,71 +88,59 @@
     <div class="tone-btn" onclick="selectTone('ˋ', this)">ˋ</div>
   </div>
 
-  <button class="action-btn" id="action-btn" onclick="checkAnswer()">ตรวจคำตอบ</button>
+  <button class="action-btn" id="action-btn" onclick="checkAnswer()">Check Answer</button>
   <div class="feedback-text" id="feedback"></div>
 </div>
 
 <script>
-const vocabData = [
-  { 
-    zh: "警察", meaning: "ตำรวจ", fullPy: "jǐngchá",
-    chars: [
-      { text: "j i n g", vowelIdx: 1, tone: "ˇ" },
-      { text: "c h a", vowelIdx: 2, tone: "ˊ" }
-    ]
+let currentLang = 'en';
+
+const i18n = {
+  en: {
+    paletteTitle: "Tap tone mark, then tap slot above vowel:",
+    checkBtn: "Check Answer", nextBtn: "Next ➔", restartBtn: "Play Again",
+    correctMsg: (py) => `✨ Correct! (Pinyin: ${py})`,
+    wrongMsg: "❌ Incorrect! Check the tone marks again.",
+    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing Pinyin tone marks!"
   },
-  { 
-    zh: "厨师", meaning: "พ่อครัว", fullPy: "chúshī",
-    chars: [
-      { text: "c h u", vowelIdx: 2, tone: "ˊ" },
-      { text: "s h i", vowelIdx: 2, tone: "ˉ" }
-    ]
-  },
-  { 
-    zh: "司机", meaning: "คนขับรถ", fullPy: "sījī",
-    chars: [
-      { text: "s i", vowelIdx: 1, tone: "ˉ" },
-      { text: "j i", vowelIdx: 1, tone: "ˉ" }
-    ]
-  },
-  { 
-    zh: "医生", meaning: "หมอ", fullPy: "yīshēng",
-    chars: [
-      { text: "y i", vowelIdx: 1, tone: "ˉ" },
-      { text: "s h e n g", vowelIdx: 2, tone: "ˉ" }
-    ]
-  },
-  { 
-    zh: "护士", meaning: "พยาบาล", fullPy: "hùshi",
-    chars: [
-      { text: "h u", vowelIdx: 1, tone: "ˋ" },
-      { text: "s h i", vowelIdx: -1, tone: "" } // ไม่มีวรรณยุกต์ (เสียงเบา)
-    ]
-  },
-  { 
-    zh: "职员", meaning: "พนักงานบริษัท", fullPy: "zhíyuán",
-    chars: [
-      { text: "z h i", vowelIdx: 2, tone: "ˊ" },
-      { text: "y u a n", vowelIdx: 2, tone: "ˊ" }
-    ]
+  th: {
+    paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:",
+    checkBtn: "ตรวจคำตอบ", nextBtn: "ข้อถัดไป ➔", restartBtn: "เริ่มเล่นใหม่อีกครั้ง",
+    correctMsg: (py) => `✨ ถูกต้อง! (Pinyin: ${py})`,
+    wrongMsg: "❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!",
+    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทุกคำแล้ว!"
   }
+};
+
+const vocabData = [
+  { zh: "警察", en: "Police", th: "ตำรวจ", fullPy: "jǐngchá", chars: [{ text: "j i n g", tone: "ˇ" }, { text: "c h a", tone: "ˊ" }] },
+  { zh: "厨师", en: "Chef", th: "พ่อครัว", fullPy: "chúshī", chars: [{ text: "c h u", tone: "ˊ" }, { text: "s h i", tone: "ˉ" }] },
+  { zh: "司机", en: "Driver", th: "คนขับรถ", fullPy: "sījī", chars: [{ text: "s i", tone: "ˉ" }, { text: "j i", tone: "ˉ" }] },
+  { zh: "医生", en: "Doctor", th: "หมอ", fullPy: "yīshēng", chars: [{ text: "y i", tone: "ˉ" }, { text: "s h e n g", tone: "ˉ" }] },
+  { zh: "护士", en: "Nurse", th: "พยาบาล", fullPy: "hùshi", chars: [{ text: "h u", tone: "ˋ" }, { text: "s h i", tone: "" }] },
+  { zh: "职员", en: "Office Worker", th: "พนักงานบริษัท", fullPy: "zhíyuán", chars: [{ text: "z h i", tone: "ˊ" }, { text: "y u a n", tone: "ˊ" }] }
 ];
 
-let currentIndex = 0;
-let selectedToneMark = null;
-let userTones = [];
+let currentIndex = 0, selectedToneMark = null, userTones = [];
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-th').classList.toggle('active', lang === 'th');
+  document.getElementById('palette-title').innerText = i18n[lang].paletteTitle;
+  loadQuestion();
+}
 
 function loadQuestion() {
+  if (currentIndex >= vocabData.length) return;
   const q = vocabData[currentIndex];
   document.getElementById('zh-display').innerText = q.zh;
-  document.getElementById('meaning-display').innerText = q.meaning;
+  document.getElementById('meaning-display').innerText = q[currentLang];
   document.getElementById('feedback').innerText = '';
-  document.getElementById('action-btn').innerText = 'ตรวจคำตอบ';
+  document.getElementById('action-btn').innerText = i18n[currentLang].checkBtn;
   document.getElementById('action-btn').onclick = checkAnswer;
   
-  // Update progress
-  const progPct = (currentIndex / vocabData.length) * 100;
-  document.getElementById('progress').style.width = progPct + '%';
+  document.getElementById('progress').style.width = (currentIndex / vocabData.length * 100) + '%';
 
   const container = document.getElementById('pinyin-container');
   container.innerHTML = '';
@@ -244,15 +149,11 @@ function loadQuestion() {
   q.chars.forEach((c, charIdx) => {
     const box = document.createElement('div');
     box.className = 'pinyin-char-box';
-
     const slot = document.createElement('div');
     slot.className = 'tone-slot';
-    slot.dataset.idx = charIdx;
     slot.onclick = () => applyToneToSlot(slot, charIdx);
-
     const label = document.createElement('div');
     label.innerText = c.text;
-
     box.appendChild(slot);
     box.appendChild(label);
     container.appendChild(box);
@@ -271,7 +172,6 @@ function applyToneToSlot(slot, idx) {
     slot.classList.add('filled');
     userTones[idx] = selectedToneMark;
   } else {
-    // If no tone selected, clear it
     slot.innerText = '';
     slot.classList.remove('filled');
     userTones[idx] = '';
@@ -280,24 +180,17 @@ function applyToneToSlot(slot, idx) {
 
 function checkAnswer() {
   const q = vocabData[currentIndex];
-  let isCorrect = true;
-
-  q.chars.forEach((c, idx) => {
-    if (c.tone !== userTones[idx]) {
-      isCorrect = false;
-    }
-  });
-
+  let isCorrect = q.chars.every((c, idx) => c.tone === userTones[idx]);
   const feedback = document.getElementById('feedback');
+
   if (isCorrect) {
     feedback.className = 'feedback-text correct';
-    feedback.innerText = `✨ ถูกต้อง! (Pinyin: ${q.fullPy})`;
-    
-    document.getElementById('action-btn').innerText = 'ข้อถัดไป ➔';
+    feedback.innerText = i18n[currentLang].correctMsg(q.fullPy);
+    document.getElementById('action-btn').innerText = i18n[currentLang].nextBtn;
     document.getElementById('action-btn').onclick = nextQuestion;
   } else {
     feedback.className = 'feedback-text wrong';
-    feedback.innerText = '❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!';
+    feedback.innerText = i18n[currentLang].wrongMsg;
   }
 }
 
@@ -305,21 +198,15 @@ function nextQuestion() {
   currentIndex++;
   if (currentIndex >= vocabData.length) {
     document.getElementById('zh-display').innerText = '🎉';
-    document.getElementById('meaning-display').innerText = 'ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทุกคำแล้ว!';
+    document.getElementById('meaning-display').innerText = i18n[currentLang].doneDesc;
     document.getElementById('pinyin-container').innerHTML = '';
     document.getElementById('feedback').innerText = '';
-    document.getElementById('action-btn').innerText = 'เริ่มเล่นใหม่อีกครั้ง';
-    document.getElementById('action-btn').onclick = () => {
-      currentIndex = 0;
-      loadQuestion();
-    };
-  } else {
-    loadQuestion();
-  }
+    document.getElementById('action-btn').innerText = i18n[currentLang].restartBtn;
+    document.getElementById('action-btn').onclick = () => { currentIndex = 0; loadQuestion(); };
+  } else loadQuestion();
 }
 
-loadQuestion();
+setLanguage('en');
 </script>
-
 </body>
 </html>
