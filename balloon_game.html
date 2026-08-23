@@ -6,31 +6,47 @@
 <title>Pinyin Bubble Pop</title>
 <style>
   * { box-sizing: border-box; touch-action: manipulation; }
-  body {
+  html, body {
     margin: 0; padding: 0;
+    width: 100%; height: 100%;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
     color: white;
-    height: 100vh;
     overflow: hidden;
+  }
+
+  /* Main Wrapper */
+  .main-wrapper {
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for iPad / Mobile browsers */
+    position: relative;
   }
   
+  /* Top Bar */
   .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    padding: 16px 24px;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(5px);
     z-index: 10;
+    flex-shrink: 0;
   }
-  .score-box, .lives-box { font-size: 18px; font-weight: bold; }
+  .score-box, .lives-box { font-size: 20px; font-weight: bold; }
   .lives-box { color: #ef4444; }
 
-  .game-area { flex: 1; position: relative; overflow: hidden; }
+  /* Game Area */
+  .game-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
 
+  /* Falling Target */
   .falling-target {
     position: absolute;
     top: 0; left: 50%;
@@ -38,98 +54,112 @@
     background: rgba(255, 255, 255, 0.15);
     border: 2px solid #a855f7;
     backdrop-filter: blur(8px);
-    padding: 12px 24px;
-    border-radius: 16px;
+    padding: 16px 32px;
+    border-radius: 20px;
     text-align: center;
     box-shadow: 0 8px 32px rgba(168, 85, 247, 0.3);
+    z-index: 5;
+    pointer-events: none;
   }
-  .target-zh { font-size: 36px; font-weight: bold; color: #fef08a; }
-  .target-meaning { font-size: 14px; color: #e9d5ff; margin-top: 4px; }
+  .target-zh { font-size: 42px; font-weight: bold; color: #fef08a; line-height: 1.2; }
+  .target-meaning { font-size: 18px; color: #e9d5ff; margin-top: 4px; }
 
-  .bubble-container {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
+  /* Bottom Bubble Zone */
+  .bubble-zone {
+    height: 120px;
+    flex-shrink: 0;
     display: flex;
+    align-items: center;
     justify-content: space-around;
-    padding: 0 10px;
+    padding: 0 20px 20px 20px;
+    z-index: 10;
   }
   .bubble {
-    width: 80px; height: 80px;
+    width: 90px; height: 90px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #38bdf8, #0284c7);
     box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4), inset 0 2px 4px rgba(255,255,255,0.6);
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: bold; color: white;
+    font-size: 20px; font-weight: bold; color: white;
     cursor: pointer; user-select: none;
+    transition: transform 0.1s;
   }
+  .bubble:active { transform: scale(0.92); }
 
+  /* Overlay Screens */
   .overlay {
     position: absolute; inset: 0;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.92);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     z-index: 20; padding: 20px; text-align: center;
   }
-  .overlay h1 { color: #fef08a; margin-bottom: 10px; font-size: 28px; }
+  .overlay h1 { color: #fef08a; margin-bottom: 12px; font-size: 32px; }
   .btn {
     background: #8b5cf6; color: white; border: none;
-    padding: 14px 28px; font-size: 18px; font-weight: bold;
-    border-radius: 12px; cursor: pointer; margin-top: 15px;
+    padding: 16px 36px; font-size: 20px; font-weight: bold;
+    border-radius: 14px; cursor: pointer; margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
   }
-  .speed-select { margin-top: 15px; display: flex; gap: 10px; }
+  .btn:active { background: #7c3aed; }
+  
+  .speed-select { margin-top: 20px; display: flex; gap: 12px; }
   .speed-btn {
     background: #334155; color: white; border: 2px solid #475569;
-    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 16px;
   }
   .speed-btn.active { border-color: #38bdf8; background: #0284c7; }
   
-  .lang-switch { position: absolute; top: 12px; right: 20px; z-index: 30; }
+  .lang-switch { position: absolute; top: 16px; right: 20px; z-index: 30; }
   .lang-btn {
     background: rgba(255,255,255,0.2); color: white;
-    border: none; padding: 4px 10px; border-radius: 6px; font-weight: bold;
+    border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; font-size: 16px;
+    cursor: pointer;
   }
   .lang-btn.active { background: #8b5cf6; }
 </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="score-box"><span id="lbl-score">Score</span>: <span id="score">0</span></div>
-  <div class="lives-box" id="lives">❤️❤️❤️</div>
-</div>
-
-<div class="game-area" id="game-area">
-  <div class="falling-target" id="target" style="display: none;">
-    <div class="target-zh" id="target-zh">警察</div>
-    <div class="target-meaning" id="target-meaning">Police</div>
-  </div>
-  <div class="bubble-container" id="bubble-container"></div>
-</div>
-
-<!-- Start Overlay -->
-<div class="overlay" id="start-screen">
-  <div class="lang-switch">
-    <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
-    <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">TH</button>
-  </div>
-  <h1>🎈 Pinyin Bubble Pop</h1>
-  <p id="start-desc">Tap the correct Pinyin bubble before the word hits the ground!</p>
-  
-  <div class="speed-select">
-    <button class="speed-btn active" id="spd-slow" onclick="setSpeed(1, this)">Slow</button>
-    <button class="speed-btn" id="spd-norm" onclick="setSpeed(1.5, this)">Normal</button>
-    <button class="speed-btn" id="spd-fast" onclick="setSpeed(2.2, this)">Fast</button>
+<div class="main-wrapper">
+  <div class="top-bar">
+    <div class="score-box"><span id="lbl-score">Score</span>: <span id="score">0</span></div>
+    <div class="lives-box" id="lives">❤️❤️❤️</div>
   </div>
 
-  <button class="btn" id="start-btn" onclick="startGame()">Start Game</button>
-</div>
+  <div class="game-area" id="game-area">
+    <div class="falling-target" id="target" style="display: none;">
+      <div class="target-zh" id="target-zh">警察</div>
+      <div class="target-meaning" id="target-meaning">Police</div>
+    </div>
+  </div>
 
-<!-- Game Over Overlay -->
-<div class="overlay" id="gameover-screen" style="display: none;">
-  <h1 id="go-title">💥 Game Over!</h1>
-  <p id="final-score" style="font-size: 22px; margin-bottom: 10px;"></p>
-  <button class="btn" id="restart-btn" onclick="startGame()">Play Again</button>
+  <div class="bubble-zone" id="bubble-container"></div>
+
+  <!-- Start Overlay -->
+  <div class="overlay" id="start-screen">
+    <div class="lang-switch">
+      <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" id="btn-th" onclick="setLanguage('th')">TH</button>
+    </div>
+    <h1>🎈 Pinyin Bubble Pop</h1>
+    <p id="start-desc" style="font-size: 18px; max-width: 400px; color: #cbd5e1;">Tap the correct Pinyin bubble before the word hits the ground!</p>
+    
+    <div class="speed-select">
+      <button class="speed-btn active" id="spd-slow" onclick="setSpeed(1, this)">Slow</button>
+      <button class="speed-btn" id="spd-norm" onclick="setSpeed(1.5, this)">Normal</button>
+      <button class="speed-btn" id="spd-fast" onclick="setSpeed(2.2, this)">Fast</button>
+    </div>
+
+    <button class="btn" id="start-btn" onclick="startGame()">Start Game</button>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="overlay" id="gameover-screen" style="display: none;">
+    <h1 id="go-title">💥 Game Over!</h1>
+    <p id="final-score" style="font-size: 24px; margin-bottom: 10px; color: #e2e8f0;"></p>
+    <button class="btn" id="restart-btn" onclick="startGame()">Play Again</button>
+  </div>
 </div>
 
 <script>
@@ -222,12 +252,19 @@ function nextTurn() {
     container.appendChild(bubble);
   });
 
-  const gameAreaHeight = document.getElementById('game-area').clientHeight - 160;
+  // Dynamically calculate bottom threshold based on container height
+  const gameArea = document.getElementById('game-area');
+  const maxDropHeight = gameArea.clientHeight - targetEl.offsetHeight - 10;
+  
   function drop() {
-    targetPos += 0.8 * speedFactor;
+    targetPos += (1.0 * speedFactor);
     targetEl.style.top = targetPos + 'px';
-    if (targetPos >= gameAreaHeight) handleMiss();
-    else animId = requestAnimationFrame(drop);
+    
+    if (targetPos >= maxDropHeight) {
+      handleMiss();
+    } else {
+      animId = requestAnimationFrame(drop);
+    }
   }
   animId = requestAnimationFrame(drop);
 }
