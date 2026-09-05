@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมซ้อมพูดสอบภาษาจีน - แนะนำครอบครัว (15 ประโยค)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Prompt', sans-serif; }
+    .word-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .word-btn:hover {
+      transform: translateY(-2px);
+    }
+    .mic-pulse {
+      animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white max-w-xl w-full rounded-3xl shadow-xl overflow-hidden border border-slate-100 flex flex-col">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-red-500 to-amber-500 p-6 text-white text-center relative">
+      <h1 class="text-2xl font-bold tracking-wide">🇨🇳 ซ้อมพูดสอบ: แนะนำครอบครัว</h1>
+      <p class="text-sm text-red-100 mt-1">เรียงประโยคให้ถูกต้อง แล้วฝึกออกเสียงตามสคริปต์สอบ</p>
+      <div class="mt-4 flex justify-between items-center text-xs font-semibold bg-black/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
+        <span id="level-indicator">ข้อที่ 1 / 15</span>
+        <span id="score-indicator">คะแนน: 0 ⭐</span>
+      </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <div class="p-6 flex-1 flex flex-col justify-between">
+      
+      <!-- Thai Meaning / Prompt -->
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">ความหมายภาษาไทย</span>
+        <h2 id="thai-prompt" class="text-lg font-semibold text-slate-700 mt-1">...</h2>
+      </div>
+
+      <!-- Target Drop/Display Area -->
+      <div class="mb-4">
+        <div class="text-xs font-semibold text-slate-400 mb-2">ประโยคของคุณ (คลิกที่คำเพื่อนำออก):</div>
+        <div id="target-zone" class="min-h-[90px] bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-3 flex flex-wrap gap-2 items-center justify-center transition-colors">
+          <span id="placeholder-text" class="text-slate-400 text-sm">คลิกเลือกคำศัพท์ด้านล่างเพื่อเรียง</span>
+        </div>
+      </div>
+
+      <!-- Source Words Area -->
+      <div class="mb-6">
+        <div class="text-xs font-semibold text-slate-400 mb-2">คลังคำศัพท์:</div>
+        <div id="source-zone" class="flex flex-wrap gap-2 justify-center p-3 bg-amber-50/50 rounded-2xl border border-amber-100 min-h-[90px]">
+          <!-- Word Buttons generated here -->
+        </div>
+      </div>
+
+      <!-- Audio & Speaking Section -->
+      <div id="speaking-section" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center mb-6">
+        <p class="text-emerald-600 font-bold mb-2">🎉 เรียงถูกต้องแล้ว! ฝึกออกเสียงกันต่อ</p>
+        
+        <div class="flex items-center justify-center gap-3 mb-3">
+          <button id="btn-listen" class="flex items-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-sm font-semibold rounded-xl transition">
+            🔊 ฟังเสียงต้นฉบับ
+          </button>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <button id="btn-mic" class="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg flex items-center justify-center text-2xl transition transform active:scale-95">
+            🎙️
+          </button>
+          <span id="mic-status" class="text-xs font-medium text-slate-500 mt-2">กดไมค์แล้วพูดประโยคนี้</span>
+          <p id="speech-result" class="text-sm font-semibold text-slate-700 mt-2 min-h-[20px]"></p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-3">
+        <button id="btn-reset" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition">
+          🔄 เริ่มใหม่
+        </button>
+        <button id="btn-check" class="flex-[2] py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition">
+          ✅ ตรวจคำตอบ
+        </button>
+        <button id="btn-next" class="hidden flex-[2] py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition">
+          ถัดไป ➔
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 15 ประโยคสคริปต์สอบจริง
+    const questions = [
+      {
+        thai: "1. ทักทาย: สวัสดีทุกคน!",
+        words: [
+          { hanzi: "大家", pinyin: "Dàjiā" },
+          { hanzi: "好", pinyin: "hǎo" }
+        ],
+        correct: ["大家", "好"]
+      },
+      {
+        thai: "2. แนะนำชื่อ: ฉันชื่อ... (ตัวอย่าง: ต้าหมิง)",
+        words: [
+          { hanzi: "我", pinyin: "Wǒ" },
+          { hanzi: "叫", pinyin: "jiào" },
+          { hanzi: "大明", pinyin: "Dàmíng" }
+        ],
+        correct: ["我", "叫", "大明"]
+      },
+      {
+        thai: "3. บอกหัวข้อ: วันนี้ฉันขอแนะนำครอบครัวของฉัน",
+        words: [
+          { hanzi: "今天", pinyin: "Jīntiān" },
+          { hanzi: "我", pinyin: "wǒ" },
+          { hanzi: "介绍", pinyin: "jièshào" },
+          { hanzi: "我的", pinyin: "wǒ de" },
+          { hanzi: "家", pinyin: "jiā" }
+        ],
+        correct: ["今天", "我", "介绍", "我的", "家"]
+      },
+      {
+        thai: "4. จำนวนสมาชิก: ครอบครัวเรามี 4 คน",
+        words: [
+          { hanzi: "我们家", pinyin: "Wǒmen jiā" },
+          { hanzi: "有", pinyin: "yǒu" },
+          { hanzi: "四口", pinyin: "sì kǒu" },
+          { hanzi: "人", pinyin: "rén" }
+        ],
+        correct: ["我们家", "有", "四口", "人"]
+      },
+      {
+        thai: "5. มีใครบ้าง: พ่อ แม่ น้องสาว และฉัน",
+        words: [
+          { hanzi: "爸爸", pinyin: "Bàba" },
+          { hanzi: "妈妈", pinyin: "māma" },
+          { hanzi: "妹妹", pinyin: "mèimei" },
+          { hanzi: "和", pinyin: "hé" },
+          { hanzi: "我", pinyin: "wǒ" }
+        ],
+        correct: ["爸爸", "妈妈", "妹妹", "和", "我"]
+      },
+      {
+        thai: "6. อาชีพพ่อแม่: พ่อแม่เป็นพนักงานบริษัท",
+        words: [
+          { hanzi: "爸爸妈妈", pinyin: "Bàba māma" },
+          { hanzi: "是", pinyin: "shì" },
+          { hanzi: "公司", pinyin: "gōngsī" },
+          { hanzi: "职员", pinyin: "zhíyuán" }
+        ],
+        correct: ["爸爸妈妈", "是", "公司", "职员"]
+      },
+      {
+        thai: "7. สถานที่ทำงาน: พวกเขาทำงานที่บ้าน",
+        words: [
+          { hanzi: "他们", pinyin: "Tāmen" },
+          { hanzi: "在", pinyin: "zài" },
+          { hanzi: "家里", pinyin: "jiālǐ" },
+          { hanzi: "工作", pinyin: "gōngzuò" }
+        ],
+        correct: ["他们", "在", "家里", "工作"]
+      },
+      {
+        thai: "8. เวลาเข้างาน: พวกเขาเริ่มงาน 8 โมงเช้า",
+        words: [
+          { hanzi: "他们", pinyin: "Tāmen" },
+          { hanzi: "早上", pinyin: "zǎoshang" },
+          { hanzi: "八点", pinyin: "bā diǎn" },
+          { hanzi: "上班", pinyin: "shàngbān" }
+        ],
+        correct: ["他们", "早上", "八点", "上班"]
+      },
+      {
+        thai: "9. เวลาเลิกงาน: เลิกงานตอน 5 โมงเย็น",
+        words: [
+          { hanzi: "下午", pinyin: "Xiàwǔ" },
+          { hanzi: "五点", pinyin: "wǔ diǎn" },
+          { hanzi: "下班", pinyin: "xiàbān" }
+        ],
+        correct: ["下午", "五点", "下班"]
+      },
+      {
+        thai: "10. น้องสาว: น้องสาวเรียนอนุบาล 3 (K3)",
+        words: [
+          { hanzi: "妹妹", pinyin: "Mèimei" },
+          { hanzi: "读", pinyin: "dú" },
+          { hanzi: "幼儿园", pinyin: "yòur'yuán" },
+          { hanzi: "大班", pinyin: "dàbān" }
+        ],
+        correct: ["妹妹", "读", "幼儿园", "大班"]
+      },
+      {
+        thai: "11. บทบาทตัวเอง: ฉันเป็นนักเรียน",
+        words: [
+          { hanzi: "我", pinyin: "Wǒ" },
+          { hanzi: "是", pinyin: "shì" },
+          { hanzi: "学生", pinyin: "xuésheng" }
+        ],
+        correct: ["我", "是", "学生"]
+      },
+      {
+        thai: "12. เวลาไปเรียน: พวกเราไปโรงเรียนตอน 7 โมงครึ่ง",
+        words: [
+          { hanzi: "我们", pinyin: "Wǒmen" },
+          { hanzi: "早上", pinyin: "zǎoshang" },
+          { hanzi: "七点半", pinyin: "qī diǎn bàn" },
+          { hanzi: "去", pinyin: "qù" },
+          { hanzi: "学校", pinyin: "xuéxiào" }
+        ],
+        correct: ["我们", "早上", "七点半", "去", "学校"]
+      },
+      {
+        thai: "13. การเดินทาง: พ่อแม่ขับรถไปส่งพวกเรา",
+        words: [
+          { hanzi: "爸爸妈妈", pinyin: "Bàba māma" },
+          { hanzi: "开车", pinyin: "kāichē" },
+          { hanzi: "送", pinyin: "sòng" },
+          { hanzi: "我们", pinyin: "wǒmen" }
+        ],
+        correct: ["爸爸妈妈", "开车", "送", "เรา" === "เรา" ? "我们" : "我们"]
+      },
+      {
+        thai: "14. บอกรัก: ฉันรักคนในครอบครัวของฉัน",
+        words: [
+          { hanzi: "我", pinyin: "Wǒ" },
+          { hanzi: "爱", pinyin: "ài" },
+          { hanzi: "我的", pinyin: "wǒ de" },
+          { hanzi: "家人", pinyin: "jiārén" }
+        ],
+        correct: ["我", "爱", "我的", "家人"]
+      },
+      {
+        thai: "15. ขอบคุณตอนจบ: ขอบคุณทุกคนครับ/ค่ะ!",
+        words: [
+          { hanzi: "谢谢", pinyin: "Xièxie" },
+          { hanzi: "大家", pinyin: "dàjiā" }
+        ],
+        correct: ["谢谢", "大家"]
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let userOrder = [];
+    let isListening = false;
+
+    // DOM Elements
+    const thaiPrompt = document.getElementById('thai-prompt');
+    const targetZone = document.getElementById('target-zone');
+    const sourceZone = document.getElementById('source-zone');
+    const placeholderText = document.getElementById('placeholder-text');
+    const levelIndicator = document.getElementById('level-indicator');
+    const scoreIndicator = document.getElementById('score-indicator');
+    const speakingSection = document.getElementById('speaking-section');
+    const btnCheck = document.getElementById('btn-check');
+    const btnNext = document.getElementById('btn-next');
+    const btnReset = document.getElementById('btn-reset');
+    const btnListen = document.getElementById('btn-listen');
+    const btnMic = document.getElementById('btn-mic');
+    const micStatus = document.getElementById('mic-status');
+    const speechResult = document.getElementById('speech-result');
+
+    // ฟังก์ชันสร้างปุ่มคำศัพท์
+    function createWordElement(wordObj, isSelected = false) {
+      const btn = document.createElement('button');
+      btn.className = isSelected 
+        ? 'word-btn flex flex-col items-center justify-center px-3.5 py-1.5 bg-amber-500 hover:bg-rose-500 text-white rounded-xl shadow transition'
+        : 'word-btn flex flex-col items-center justify-center px-3.5 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-slate-800 rounded-xl shadow-sm transition';
+
+      btn.innerHTML = `
+        <span class="text-[11px] leading-tight font-normal ${isSelected ? 'text-amber-100' : 'text-amber-600'}">${wordObj.pinyin}</span>
+        <span class="text-base font-bold leading-snug">${wordObj.hanzi}</span>
+      `;
+      return btn;
+    }
+
+    // โหลดคำถาม
+    function loadQuestion(index) {
+      const q = questions[index];
+      thaiPrompt.innerText = q.thai;
+      levelIndicator.innerText = `ข้อที่ ${index + 1} / ${questions.length}`;
+      userOrder = [];
+      targetZone.innerHTML = '';
+      targetZone.appendChild(placeholderText);
+      sourceZone.innerHTML = '';
+      speakingSection.classList.add('hidden');
+      btnNext.classList.add('hidden');
+      btnCheck.classList.remove('hidden');
+      speechResult.innerText = '';
+      micStatus.innerText = 'กดไมค์แล้วพูดประโยคนี้';
+
+      // สุ่มคำศัพท์
+      const shuffled = [...q.words].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach(wordObj => {
+        const btn = createWordElement(wordObj, false);
+        btn.onclick = () => selectWord(wordObj, btn);
+        sourceZone.appendChild(btn);
+      });
+    }
+
+    // เลือกคำศัพท์
+    function selectWord(wordObj, element) {
+      if (placeholderText.parentNode === targetZone) {
+        targetZone.removeChild(placeholderText);
+      }
+      userOrder.push(wordObj);
+      element.remove();
+
+      const btn = createWordElement(wordObj, true);
+      btn.onclick = () => deselectWord(wordObj, btn);
+      targetZone.appendChild(btn);
+    }
+
+    // นำคำออก
+    function deselectWord(wordObj, element) {
+      const index = userOrder.indexOf(wordObj);
+      if (index > -1) {
+        userOrder.splice(index, 1);
+      }
+      element.remove();
+
+      if (userOrder.length === 0) {
+        targetZone.appendChild(placeholderText);
+      }
+
+      const btn = createWordElement(wordObj, false);
+      btn.onclick = () => selectWord(wordObj, btn);
+      sourceZone.appendChild(btn);
+    }
+
+    // ตรวจคำตอบ
+    btnCheck.onclick = () => {
+      const q = questions[currentIndex];
+      const userHanziList = userOrder.map(w => w.hanzi);
+      const isCorrect = JSON.stringify(userHanziList) === JSON.stringify(q.correct);
+
+      if (isCorrect) {
+        confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+        speakingSection.classList.remove('hidden');
+        btnCheck.classList.add('hidden');
+        btnNext.classList.remove('hidden');
+        score += 10;
+        scoreIndicator.innerText = `คะแนน: ${score} ⭐`;
+      } else {
+        alert('ยังเรียงไม่ถูกต้อง ลองตรวจสอบลำดับคำอีกครั้งนะครับ! 💪');
+      }
+    };
+
+    // ปุ่มเริ่มใหม่
+    btnReset.onclick = () => loadQuestion(currentIndex);
+
+    // ปุ่มข้อถัดไป
+    btnNext.onclick = () => {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        loadQuestion(currentIndex);
+      } else {
+        targetZone.innerHTML = `<span class="text-emerald-600 font-bold">🎉 ยินดีด้วย! ซ้อมครบทั้ง 15 ประโยคแล้ว ขอให้ได้คะแนนเต็มในการสอบนะครับ!</span>`;
+        sourceZone.innerHTML = '';
+        btnNext.classList.add('hidden');
+        btnCheck.classList.add('hidden');
+        speakingSection.classList.add('hidden');
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+      }
+    };
+
+    // ออกเสียง TTS
+    btnListen.onclick = () => {
+      const q = questions[currentIndex];
+      const fullText = q.correct.join('');
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    };
+
+    // ระบบ Speech Recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'zh-CN';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      btnMic.onclick = () => {
+        if (!isListening) {
+          try {
+            recognition.start();
+            btnMic.classList.add('mic-pulse', 'bg-red-600');
+            micStatus.innerText = 'กำลังฟัง... กรุณาออกเสียง';
+            isListening = true;
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      };
+
+      recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()！？，。]/g,"");
+        const targetText = questions[currentIndex].correct.join('');
+        
+        speechResult.innerText = `ได้ยินว่า: "${spokenText}"`;
+
+        if (spokenText.includes(targetText) || targetText.includes(spokenText)) {
+          speechResult.className = "text-sm font-bold text-emerald-600 mt-2";
+          speechResult.innerText += " ✅ ยอดเยี่ยม! สำเนียงถูกต้อง";
+          confetti({ particleCount: 40, spread: 50 });
+        } else {
+          speechResult.className = "text-sm font-semibold text-amber-600 mt-2";
+          speechResult.innerText += " ❌ ใกล้เคียงแล้ว ลองกดฟังแล้วพูดใหม่อีกครั้งนะ!";
+        }
+      };
+
+      recognition.onend = () => {
+        btnMic.classList.remove('mic-pulse', 'bg-red-600');
+        micStatus.innerText = 'กดไมค์เพื่อลองพูดอีกครั้ง';
+        isListening = false;
+      };
+
+      recognition.onerror = (event) => {
+        btnMic.classList.remove('mic-pulse', 'bg-red-600');
+        isListening = false;
+        if (event.error === 'not-allowed') {
+          micStatus.innerText = '⚠️ กรุณากดอนุญาตให้เข้าถึงไมโครโฟน';
+        } else if (event.error === 'no-speech') {
+          micStatus.innerText = '⚠️ ไม่ได้ยินเสียงพูด กดไมค์เพื่อลองใหม่';
+        } else if (event.error === 'network') {
+          micStatus.innerText = '⚠️ แนะนำให้เปิดผ่าน Live Server บน VS Code';
+        } else {
+          micStatus.innerText = `⚠️ เกิดข้อผิดพลาด (${event.error}) กดเพื่อลองใหม่`;
+        }
+      };
+    } else {
+      btnMic.onclick = () => {
+        alert('เบราว์เซอร์ของคุณยังไม่รองรับการตรวจจับเสียง (แนะนำให้เปิดด้วย Google Chrome)');
+      };
+    }
+
+    // เริ่มต้นคำถามแรก
+    loadQuestion(0);
+  </script>
+</body>
+</html>
