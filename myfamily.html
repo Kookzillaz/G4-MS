@@ -48,19 +48,19 @@
 
     <form id="setup-form" class="space-y-4">
       <!-- 1. ข้อมูลชื่อ -->
-      <div class="bg-amber-50/70 p-4 rounded-2xl border border-amber-100 space-y-3">
-        <label data-i18n="section1_label" class="block text-sm font-bold text-amber-900">1. ข้อมูลชื่อของคุณ</label>
+      <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-100 space-y-3">
+        <label data-i18n="section1_label" class="block text-sm font-bold text-sky-900">1. ข้อมูลชื่อของคุณ</label>
         <div>
           <span data-i18n="input_name_label" class="text-xs text-slate-500">พิมพ์ชื่อภาษาอังกฤษหรือภาษาจีน:</span>
-          <input type="text" id="input-user-hanzi" value="Mulan" required placeholder="เช่น Mulan, Chan หรือ 李华" 
-            class="w-full mt-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold">
+          <input type="text" id="input-user-hanzi" value="ONGSA" required placeholder="เช่น ONGSA, ARIN หรือ 李华" 
+            class="w-full mt-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-semibold">
         </div>
 
         <!-- กล่องเลือกคำอ่าน Pinyin อัตโนมัติและฟังเสียง -->
-        <div id="pinyin-selector-box" class="bg-white p-3 rounded-xl border border-amber-200 space-y-2">
+        <div id="pinyin-selector-box" class="bg-white p-3 rounded-xl border border-sky-200 space-y-2">
           <div class="flex items-center justify-between">
             <span data-i18n="pinyin_confirm_label" class="text-xs font-bold text-slate-700">📌 ตรวจสอบคำอ่าน / เสียงอ่าน:</span>
-            <button type="button" id="btn-preview-name" class="flex items-center gap-1 text-xs px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold rounded-lg transition">
+            <button type="button" id="btn-preview-name" class="flex items-center gap-1 text-xs px-2.5 py-1 bg-sky-100 hover:bg-sky-200 text-sky-700 font-semibold rounded-lg transition">
               🔊 <span data-i18n="btn_preview_sound">ฟังเสียงชื่อ</span>
             </button>
           </div>
@@ -69,35 +69,35 @@
       </div>
 
       <!-- 2. ข้อมูลพี่น้อง -->
-      <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100 space-y-3">
+      <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-100 space-y-3">
         <div class="flex items-center justify-between">
-          <label data-i18n="section_siblings_label" class="block text-sm font-bold text-emerald-900">2. จำนวนพี่น้อง (ไม่รวมตัวคุณ)</label>
-          <span id="calculated-total-people" class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">ครอบครัวมี 4 คน</span>
+          <label data-i18n="section_siblings_label" class="block text-sm font-bold text-blue-900">2. จำนวนพี่น้อง (ไม่รวมตัวคุณ)</label>
+          <span id="calculated-total-people" class="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full">ครอบครัวมี 4 คน</span>
         </div>
         <p data-i18n="siblings_desc" class="text-xs text-slate-500">เลือกจำนวนพี่น้องในบ้าน (ถ้าเป็นลูกคนเดียวให้ใส่ 0 ทั้งหมด):</p>
 
         <div class="grid grid-cols-2 gap-2.5 pt-1">
           <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 text-xs">
             <span class="font-semibold text-slate-700">👦 พี่ชาย (哥哥):</span>
-            <select id="sibling-gege" class="sibling-select font-bold text-emerald-700 border-b border-emerald-400 bg-transparent focus:outline-none">
+            <select id="sibling-gege" class="sibling-select font-bold text-blue-700 border-b border-blue-400 bg-transparent focus:outline-none">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 text-xs">
             <span class="font-semibold text-slate-700">👧 พี่สาว (姐姐):</span>
-            <select id="sibling-jiejie" class="sibling-select font-bold text-emerald-700 border-b border-emerald-400 bg-transparent focus:outline-none">
+            <select id="sibling-jiejie" class="sibling-select font-bold text-blue-700 border-b border-blue-400 bg-transparent focus:outline-none">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 text-xs">
             <span class="font-semibold text-slate-700">👦 น้องชาย (弟弟):</span>
-            <select id="sibling-didi" class="sibling-select font-bold text-emerald-700 border-b border-emerald-400 bg-transparent focus:outline-none">
+            <select id="sibling-didi" class="sibling-select font-bold text-blue-700 border-b border-blue-400 bg-transparent focus:outline-none">
               <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
           <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 text-xs">
             <span class="font-semibold text-slate-700">👧 น้องสาว (妹妹):</span>
-            <select id="sibling-meimei" class="sibling-select font-bold text-emerald-700 border-b border-emerald-400 bg-transparent focus:outline-none">
+            <select id="sibling-meimei" class="sibling-select font-bold text-blue-700 border-b border-blue-400 bg-transparent focus:outline-none">
               <option value="0">0</option><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option>
             </select>
           </div>
@@ -122,7 +122,7 @@
         </div>
       </div>
 
-      <button type="submit" data-i18n="btn_start_game" class="w-full py-3.5 bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-bold rounded-2xl shadow-lg transition transform active:scale-95">
+      <button type="submit" data-i18n="btn_start_game" class="w-full py-3.5 bg-gradient-to-r from-blue-500 to-sky-500 hover:from-blue-600 hover:to-sky-600 text-white font-bold rounded-2xl shadow-lg transition transform active:scale-95">
         🚀 เริ่มซ้อมทำข้อสอบ
       </button>
     </form>
@@ -131,7 +131,7 @@
   <!-- ==================== GAME AREA SCREEN ==================== -->
   <div id="game-screen" class="hidden bg-white max-w-xl w-full rounded-3xl shadow-xl overflow-hidden border border-slate-100 flex-col">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-red-500 to-amber-500 p-6 text-white text-center relative">
+    <div class="bg-gradient-to-r from-blue-500 to-sky-500 p-6 text-white text-center relative">
       <button id="btn-edit-setup" data-i18n="btn_edit_setup" class="absolute left-4 top-5 text-xs bg-black/20 hover:bg-black/30 px-3 py-1.5 rounded-xl backdrop-blur-sm transition">
         ⚙️ แก้ไขข้อมูล
       </button>
@@ -142,7 +142,7 @@
       </div>
 
       <h1 data-i18n="game_title" class="text-2xl font-bold tracking-wide mt-2">🇨🇳 ซ้อมพูดสอบแนะนำตัว</h1>
-      <p data-i18n="game_subtitle" class="text-sm text-red-100 mt-1">เรียงประโยคสั้นๆ ให้ถูกต้อง แล้วฝึกออกเสียงตามสคริปต์</p>
+      <p data-i18n="game_subtitle" class="text-sm text-sky-100 mt-1">เรียงประโยคสั้นๆ ให้ถูกต้อง แล้วฝึกออกเสียงตามสคริปต์</p>
       <div class="mt-4 flex justify-between items-center text-xs font-semibold bg-black/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
         <span id="level-indicator">ข้อที่ 1 / 18</span>
         <span id="score-indicator">คะแนน: 0 ⭐</span>
@@ -163,8 +163,8 @@
       <div class="mb-4">
         <div class="flex justify-between items-center mb-2">
           <span data-i18n="target_zone_label" class="text-xs font-semibold text-slate-400">ประโยคของคุณ (คลิกที่คำเพื่อนำออก):</span>
-          <button id="btn-show-hint" type="button" data-i18n="btn_show_solution" class="text-xs font-bold text-amber-600 hover:text-amber-700 underline">
-            💡 เฉลยคำตอบ
+          <button id="btn-show-hint" type="button" data-i18n="btn_show_solution" class="text-xs font-bold text-sky-600 hover:text-sky-700 underline">
+            💡 แสดงคำตอบ
           </button>
         </div>
         <div id="target-zone" class="min-h-[85px] bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-3 flex flex-wrap gap-2 items-center justify-center transition-colors">
@@ -174,13 +174,20 @@
 
       <!-- Source Words Area -->
       <div class="mb-6">
-        <div data-i18n="source_zone_label" class="text-xs font-semibold text-slate-400 mb-2">คลังคำศัพท์:</div>
-        <div id="source-zone" class="flex flex-wrap gap-2 justify-center p-3 bg-amber-50/50 rounded-2xl border border-amber-100 min-h-[85px]"></div>
+        <div class="flex justify-between items-center mb-2">
+          <span data-i18n="source_zone_label" class="text-xs font-semibold text-slate-400">คลังคำศัพท์:</span>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <span data-i18n="toggle_meaning_label" class="text-xs text-slate-500">แสดงความหมาย</span>
+            <input type="checkbox" id="toggle-meaning" class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-sky-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-500 relative"></div>
+          </label>
+        </div>
+        <div id="source-zone" class="flex flex-wrap gap-2 justify-center p-3 bg-sky-50/50 rounded-2xl border border-sky-100 min-h-[85px]"></div>
       </div>
 
       <!-- Audio & Speaking Section -->
       <div id="speaking-section" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center mb-6">
-        <p data-i18n="speaking_congrats" class="text-emerald-600 font-bold mb-2">🎉 เรียงถูกต้องแล้ว! ฝึกออกเสียงกันต่อ</p>
+        <p data-i18n="speaking_congrats" class="text-blue-600 font-bold mb-2">🎉 เรียงถูกต้องแล้ว! ฝึกออกเสียงกันต่อ</p>
         
         <div class="flex items-center justify-center gap-3 mb-3">
           <button id="btn-listen" data-i18n="btn_listen" class="flex items-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-sm font-semibold rounded-xl transition">
@@ -189,7 +196,7 @@
         </div>
 
         <div class="flex flex-col items-center">
-          <button id="btn-mic" class="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg flex items-center justify-center text-2xl transition transform active:scale-95">
+          <button id="btn-mic" class="w-16 h-16 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg flex items-center justify-center text-2xl transition transform active:scale-95">
             🎙️
           </button>
           <span id="mic-status" data-i18n="mic_instruction" class="text-xs font-medium text-slate-500 mt-2">กดไมค์แล้วพูดประโยคนี้</span>
@@ -205,10 +212,13 @@
         <button id="btn-skip" data-i18n="btn_skip" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition text-sm">
           ⏭️ ข้ามข้อนี้
         </button>
-        <button id="btn-check" data-i18n="btn_check" class="flex-[2] py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition text-sm">
+        <button id="btn-check" data-i18n="btn_check" class="flex-[2] py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md transition text-sm">
           ✅ ตรวจคำตอบ
         </button>
-        <button id="btn-next" data-i18n="btn_next" class="hidden flex-[2] py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition text-sm">
+        <button id="btn-back" data-i18n="btn_back" class="hidden flex-1 py-3 bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold rounded-xl transition text-sm">
+          ⬅ ย้อนกลับ
+        </button>
+        <button id="btn-next" data-i18n="btn_next" class="hidden flex-[2] py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow-md transition text-sm">
           ถัดไป ➔
         </button>
       </div>
@@ -217,6 +227,7 @@
 
   <script>
     let currentLang = 'th';
+    let showMeaning = false;
 
     const uiText = {
       th: {
@@ -241,9 +252,10 @@
         score_prefix: "คะแนน:",
         prompt_meaning_label: "ความหมายภาษาไทย",
         target_zone_label: "ประโยคของคุณ (คลิกที่คำเพื่อนำออก):",
-        btn_show_solution: "💡 เฉลยคำตอบ",
+        btn_show_solution: "💡 แสดงคำตอบ",
         placeholder_target: "คลิกเลือกคำศัพท์ด้านล่างเพื่อเรียง",
         source_zone_label: "คลังคำศัพท์:",
+        toggle_meaning_label: "แสดงความหมาย",
         speaking_congrats: "🎉 เรียงถูกต้องแล้ว! ฝึกออกเสียงกันต่อ",
         btn_listen: "🔊 ฟังเสียงต้นฉบับ",
         mic_instruction: "กดไมค์แล้วพูดประโยคนี้",
@@ -252,10 +264,11 @@
         btn_reset: "🔄 เริ่มใหม่",
         btn_skip: "⏭️ ข้ามข้อนี้",
         btn_check: "✅ ตรวจคำตอบ",
+        btn_back: "⬅ ย้อนกลับ",
         btn_next: "ถัดไป ➔",
         hint_wrong_order: "⚠️ ยังไม่ถูกต้อง: ดูคำที่ไฮไลต์สีแดงแล้วสลับตำแหน่งใหม่นะ!",
         hint_incomplete: "⚠️ ยังใส่คำไม่ครบตามจำนวน",
-        hint_revealed: "💡 เฉลยประโยคให้แล้ว ลองฝึกอ่านออกเสียงตามได้เลย!",
+        hint_revealed: "💡 แสดงคำตอบแล้ว ลองฝึกอ่านออกเสียงตามได้เลย!",
         all_done_msg: "🎉 ยอดเยี่ยมมาก! ซ้อมครบทุกประโยคแล้ว พร้อมสอบแน่นอน!",
         mic_heard_prefix: "ได้ยินว่า:",
         mic_perfect: " ✅ ยอดเยี่ยม! สำเนียงถูกต้อง",
@@ -286,9 +299,10 @@
         score_prefix: "Score:",
         prompt_meaning_label: "English Meaning",
         target_zone_label: "Your sentence (click word to remove):",
-        btn_show_solution: "💡 Show Solution",
+        btn_show_solution: "💡 Show Answer",
         placeholder_target: "Click words below to assemble",
         source_zone_label: "Word Bank:",
+        toggle_meaning_label: "Show meaning",
         speaking_congrats: "🎉 Great order! Now practice speaking.",
         btn_listen: "🔊 Listen to Audio",
         mic_instruction: "Click mic and speak this sentence",
@@ -297,10 +311,11 @@
         btn_reset: "🔄 Reset",
         btn_skip: "⏭️ Skip",
         btn_check: "✅ Check Answer",
+        btn_back: "⬅ Back",
         btn_next: "Next ➔",
         hint_wrong_order: "⚠️ Incorrect order: Check words highlighted in red!",
         hint_incomplete: "⚠️ Incomplete: Please place all words in the sentence.",
-        hint_revealed: "💡 Solution revealed! You can now practice reading it aloud.",
+        hint_revealed: "💡 Answer revealed! You can now practice reading it aloud.",
         all_done_msg: "🎉 Outstanding! You completed all sentences. Good luck on your exam!",
         mic_heard_prefix: "Heard:",
         mic_perfect: " ✅ Excellent! Accurate pronunciation",
@@ -369,6 +384,7 @@
     const speakingSection = document.getElementById('speaking-section');
     const btnCheck = document.getElementById('btn-check');
     const btnSkip = document.getElementById('btn-skip');
+    const btnBack = document.getElementById('btn-back');
     const btnNext = document.getElementById('btn-next');
     const btnReset = document.getElementById('btn-reset');
     const btnListen = document.getElementById('btn-listen');
@@ -389,7 +405,7 @@
 
       for (let char of text) {
         const charWrapper = document.createElement('div');
-        charWrapper.className = 'flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200 text-xs';
+        charWrapper.className = 'flex items-center gap-1 bg-sky-50 px-2 py-1 rounded-lg border border-sky-200 text-xs';
 
         const charLabel = document.createElement('span');
         charLabel.className = 'font-bold text-slate-800 text-sm';
@@ -407,7 +423,7 @@
 
         if (candidates.length > 0) {
           const select = document.createElement('select');
-          select.className = 'pinyin-char-select bg-white border border-amber-300 rounded px-1.5 py-0.5 text-xs font-semibold text-amber-900 focus:outline-none';
+          select.className = 'pinyin-char-select bg-white border border-sky-300 rounded px-1.5 py-0.5 text-xs font-semibold text-sky-900 focus:outline-none';
           candidates.forEach(cand => {
             const opt = document.createElement('option');
             opt.value = cand;
@@ -467,9 +483,18 @@
     document.querySelectorAll('.sibling-select').forEach(sel => sel.addEventListener('change', updateTotalPeopleBadge));
     document.querySelectorAll('.job-input-select').forEach(sel => sel.addEventListener('change', checkSameJobs));
 
+    // Toggle show/hide meaning
+    document.getElementById('toggle-meaning').addEventListener('change', (e) => {
+      showMeaning = e.target.checked;
+      // Re-render current question to update word elements
+      if (!gameScreen.classList.contains('hidden') && questions.length > 0) {
+        loadQuestion(currentIndex);
+      }
+    });
+
     function populateJobDropdowns() {
-      const dadCur = selectDadJob.value || 'programmer';
-      const momCur = selectMomJob.value || 'programmer';
+      const dadCur = selectDadJob.value || 'employee';
+      const momCur = selectMomJob.value || 'employee';
 
       selectDadJob.innerHTML = '';
       selectMomJob.innerHTML = '';
@@ -519,6 +544,19 @@
         meaningPrompt.innerText = q.prompt[currentLang];
         levelIndicator.innerText = `${uiText[currentLang].level_prefix} ${currentIndex + 1} / ${questions.length}`;
         scoreIndicator.innerText = `${uiText[currentLang].score_prefix} ${score} ⭐`;
+
+        // Re-render word boxes to update meanings to new language
+        sourceZone.innerHTML = '';
+        const currentQ = questions[currentIndex];
+        const usedWords = userOrder.map(w => w.hanzi);
+        const availableWords = currentQ.words.filter(w => !usedWords.includes(w.hanzi));
+        const shuffled = [...availableWords].sort(() => Math.random() - 0.5);
+        shuffled.forEach(wordObj => {
+          const btn = createWordElement(wordObj, false);
+          btn.onclick = () => selectWord(wordObj, btn);
+          sourceZone.appendChild(btn);
+        });
+        renderTargetZone();
       }
     }
 
@@ -545,21 +583,34 @@
       // 1. สวัสดีทุกคน
       questions.push({
         prompt: { th: "สวัสดีทุกคน!", en: "Hello everyone!" },
-        words: [{ hanzi: "大家", pinyin: "Dàjiā" }, { hanzi: "好", pinyin: "hǎo" }],
+        words: [
+          { hanzi: "大家", pinyin: "Dàjiā", meaning: { th: "ทุกคน", en: "everyone" } },
+          { hanzi: "好", pinyin: "hǎo", meaning: { th: "สวัสดี", en: "Hello" } }
+        ],
         correct: ["大家", "好"]
       });
 
       // 2. บอกชื่อ
       questions.push({
         prompt: { th: `ฉันชื่อ ${userNameHanzi}`, en: `My name is ${userNameHanzi}.` },
-        words: [{ hanzi: "我", pinyin: "Wǒ" }, { hanzi: "叫", pinyin: "jiào" }, { hanzi: userNameHanzi, pinyin: userNamePinyin }],
+        words: [
+          { hanzi: "我", pinyin: "Wǒ", meaning: { th: "ฉัน", en: "I" } },
+          { hanzi: "叫", pinyin: "jiào", meaning: { th: "ชื่อ", en: "called" } },
+          { hanzi: userNameHanzi, pinyin: userNamePinyin, meaning: { th: "ชื่อ", en: "name" } }
+        ],
         correct: ["我", "叫", userNameHanzi]
       });
 
       // 3. วันนี้ฉันจะแนะนำครอบครัวของฉัน
       questions.push({
         prompt: { th: "วันนี้ฉันจะแนะนำครอบครัวของฉัน", en: "Today I want to introduce my family." },
-        words: [{ hanzi: "今天", pinyin: "Jīntiān" }, { hanzi: "我要", pinyin: "wǒ yào" }, { hanzi: "介绍", pinyin: "jièshào" }, { hanzi: "我的", pinyin: "wǒ de" }, { hanzi: "家庭", pinyin: "jiātíng" }],
+        words: [
+          { hanzi: "今天", pinyin: "Jīntiān", meaning: { th: "วันนี้", en: "today" } },
+          { hanzi: "我要", pinyin: "wǒ yào", meaning: { th: "ฉันจะ", en: "I want to" } },
+          { hanzi: "介绍", pinyin: "jièshào", meaning: { th: "แนะนำ", en: "introduce" } },
+          { hanzi: "我的", pinyin: "wǒ de", meaning: { th: "ของฉัน", en: "my" } },
+          { hanzi: "家庭", pinyin: "jiātíng", meaning: { th: "ครอบครัว", en: "family" } }
+        ],
         correct: ["今天", "我要", "介绍", "我的", "家庭"]
       });
 
@@ -574,28 +625,31 @@
       if (m > 0) sibItems.push({ hanzi: "妹妹", pinyin: "mèimei", th: "น้องสาว", en: "younger sister" });
 
       const famWordList = [
-        { hanzi: "我们家", pinyin: "Wǒmen jiā" },
-        { hanzi: "有", pinyin: "yǒu" },
-        { hanzi: `${totalNumHanzi}口人`, pinyin: `${totalNumPinyin} kǒu rén` },
-        { hanzi: "爸爸", pinyin: "bàba" },
-        { hanzi: "妈妈", pinyin: "māma" }
+        { hanzi: "我们家", pinyin: "Wǒmen jiā", meaning: { th: "บ้านของเรา", en: "our family" } },
+        { hanzi: "有", pinyin: "yǒu", meaning: { th: "มี", en: "have" } },
+        { hanzi: `${totalNumHanzi}口人`, pinyin: `${totalNumPinyin} kǒu rén`, meaning: { th: `${total} คน`, en: `${total} people` } },
+        { hanzi: "爸爸", pinyin: "bàba", meaning: { th: "พ่อ", en: "father" } },
+        { hanzi: "妈妈", pinyin: "māma", meaning: { th: "แม่", en: "mother" } }
       ];
       const famCorrectList = ["我们家", "有", `${totalNumHanzi}口人`, "爸爸", "妈妈"];
 
       sibItems.forEach(sib => {
-        famWordList.push({ hanzi: sib.hanzi, pinyin: sib.pinyin });
+        famWordList.push({ hanzi: sib.hanzi, pinyin: sib.pinyin, meaning: { th: sib.th, en: sib.en } });
         famCorrectList.push(sib.hanzi);
       });
 
-      famWordList.push({ hanzi: "和", pinyin: "hé" }, { hanzi: "我", pinyin: "wǒ" });
+      famWordList.push(
+        { hanzi: "和", pinyin: "hé", meaning: { th: "และ", en: "and" } },
+        { hanzi: "我", pinyin: "wǒ", meaning: { th: "ฉัน", en: "me" } }
+      );
       famCorrectList.push("和", "我");
 
       const sibThDesc = sibItems.map(s => s.th).join(" ");
       const sibEnDesc = sibItems.map(s => s.en).join(", ");
       questions.push({
-        prompt: { 
-          th: `ครอบครัวพวกเรามี ${total} คน: พ่อ แม่ ${sibThDesc ? sibThDesc + ' ' : ''}และฉัน`, 
-          en: `Our family has ${total} people: Dad, Mom, ${sibEnDesc ? sibEnDesc + ', ' : ''}and me.` 
+        prompt: {
+          th: `ครอบครัวพวกเรามี ${total} คน: พ่อ แม่ ${sibThDesc ? sibThDesc + ' ' : ''}และฉัน`,
+          en: `Our family has ${total} people: Dad, Mom, ${sibEnDesc ? sibEnDesc + ', ' : ''}and me.`
         },
         words: famWordList,
         correct: famCorrectList
@@ -604,63 +658,68 @@
       // ข้อมูลคุณพ่อ & คุณแม่ (รวมประโยคถ้าทำอาชีพเดียวกัน)
       if (isSameJob) {
         questions.push({
-          prompt: { 
-            th: `พ่อและแม่ของฉันล้วนเป็น${dadJob.th}`, 
-            en: `Both my father and mother are ${dadJob.en}s.` 
+          prompt: {
+            th: `พ่อและแม่ของฉันล้วนเป็น${dadJob.th}`,
+            en: `Both my father and mother are ${dadJob.en}s.`
           },
           words: [
-            { hanzi: "我爸爸", pinyin: "Wǒ bàba" },
-            { hanzi: "和我妈妈", pinyin: "hé wǒ māma" },
-            { hanzi: "都是", pinyin: "dōu shì" },
-            { hanzi: dadJob.hanzi, pinyin: dadJob.pinyin }
+            { hanzi: "我爸爸", pinyin: "Wǒ bàba", meaning: { th: "พ่อของฉัน", en: "my father" } },
+            { hanzi: "和我妈妈", pinyin: "hé wǒ māma", meaning: { th: "และแม่ของฉัน", en: "and my mother" } },
+            { hanzi: "都是", pinyin: "dōu shì", meaning: { th: "ล้วนเป็น", en: "both are" } },
+            { hanzi: dadJob.hanzi, pinyin: dadJob.pinyin, meaning: { th: dadJob.th, en: dadJob.en } }
           ],
           correct: ["我爸爸", "和我妈妈", "都是", dadJob.hanzi]
         });
       } else {
         questions.push({
           prompt: { th: `พ่อของฉันเป็น${dadJob.th}`, en: `My father is a ${dadJob.en}.` },
-          words: [{ hanzi: "我爸爸", pinyin: "Wǒ bàba" }, { hanzi: "是", pinyin: "shì" }, { hanzi: "一名", pinyin: "yì míng" }, { hanzi: dadJob.hanzi, pinyin: dadJob.pinyin }],
+          words: [
+            { hanzi: "我爸爸", pinyin: "Wǒ bàba", meaning: { th: "พ่อของฉัน", en: "my father" } },
+            { hanzi: "是", pinyin: "shì", meaning: { th: "เป็น", en: "is" } },
+            { hanzi: "一名", pinyin: "yì míng", meaning: { th: "หนึ่งคน", en: "a" } },
+            { hanzi: dadJob.hanzi, pinyin: dadJob.pinyin, meaning: { th: dadJob.th, en: dadJob.en } }
+          ],
           correct: ["我爸爸", "是", "一名", dadJob.hanzi]
         });
         questions.push({
           prompt: { th: `แม่ของฉันเป็น${momJob.th}`, en: `My mother is a ${momJob.en}.` },
-          words: [{ hanzi: "我妈妈", pinyin: "Wǒ māma" }, { hanzi: "是", pinyin: "shì" }, { hanzi: "一名", pinyin: "yì míng" }, { hanzi: momJob.hanzi, pinyin: momJob.pinyin }],
+          words: [
+            { hanzi: "我妈妈", pinyin: "Wǒ māma", meaning: { th: "แม่ของฉัน", en: "my mother" } },
+            { hanzi: "是", pinyin: "shì", meaning: { th: "เป็น", en: "is" } },
+            { hanzi: "一名", pinyin: "yì míng", meaning: { th: "หนึ่งคน", en: "a" } },
+            { hanzi: momJob.hanzi, pinyin: momJob.pinyin, meaning: { th: momJob.th, en: momJob.en } }
+          ],
           correct: ["我妈妈", "是", "一名", momJob.hanzi]
         });
       }
 
-      // เวลาทำงานและการเดินทางพ่อ
+      // เวลาทำงานและการเดินทางของพ่อและแม่ (รวมกัน)
       questions.push({
-        prompt: { th: "พ่อเข้างาน 8 โมงเช้า", en: "Father starts work at 8:00 AM." },
-        words: [{ hanzi: "他", pinyin: "Tā" }, { hanzi: "早上八点", pinyin: "zǎoshang bā diǎn" }, { hanzi: "上班", pinyin: "shàngbān" }],
-        correct: ["他", "早上八点", "上班"]
+        prompt: { th: "พ่อกับแม่เข้างาน 8 โมงเช้า", en: "Father and Mother start work at 8:00 AM." },
+        words: [
+          { hanzi: "他们", pinyin: "Tāmen", meaning: { th: "พวกเขา", en: "they" } },
+          { hanzi: "早上八点", pinyin: "zǎoshang bā diǎn", meaning: { th: "8 โมงเช้า", en: "8:00 AM" } },
+          { hanzi: "上班", pinyin: "shàngbān", meaning: { th: "เข้างาน", en: "start work" } }
+        ],
+        correct: ["他们", "早上八点", "上班"]
       });
       questions.push({
-        prompt: { th: "พ่อเลิกงาน 4 โมงเย็น", en: "Father finishes work at 4:00 PM." },
-        words: [{ hanzi: "他", pinyin: "Tā" }, { hanzi: "下午四点", pinyin: "xiàwǔ sì diǎn" }, { hanzi: "下班", pinyin: "xiàbān" }],
-        correct: ["他", "下午四点", "下班"]
+        prompt: { th: "พวกเขาเลิกงาน 4 โมงเย็น", en: "They finish work at 4:00 PM." },
+        words: [
+          { hanzi: "他们", pinyin: "Tāmen", meaning: { th: "พวกเขา", en: "they" } },
+          { hanzi: "下午四点", pinyin: "xiàwǔ sì diǎn", meaning: { th: "4 โมงเย็น", en: "4:00 PM" } },
+          { hanzi: "下班", pinyin: "xiàbān", meaning: { th: "เลิกงาน", en: "finish work" } }
+        ],
+        correct: ["他们", "下午四点", "下班"]
       });
       questions.push({
-        prompt: { th: "พ่อนั่งรถยนต์ไปทำงาน", en: "Father goes to work by car." },
-        words: [{ hanzi: "他", pinyin: "Tā" }, { hanzi: "坐汽车", pinyin: "zuò qìchē" }, { hanzi: "去上班", pinyin: "qù shàngbān" }],
-        correct: ["他", "坐汽车", "去上班"]
-      });
-
-      // เวลาทำงานและการเดินทางแม่
-      questions.push({
-        prompt: { th: "แม่เข้างาน 8 โมงเช้า", en: "Mother starts work at 8:00 AM." },
-        words: [{ hanzi: "她", pinyin: "Tā" }, { hanzi: "早上八点", pinyin: "zǎoshang bā diǎn" }, { hanzi: "上班", pinyin: "shàngbān" }],
-        correct: ["她", "早上八点", "上班"]
-      });
-      questions.push({
-        prompt: { th: "แม่เลิกงาน 4 โมงเย็น", en: "Mother finishes work at 4:00 PM." },
-        words: [{ hanzi: "她", pinyin: "Tā" }, { hanzi: "下午四点", pinyin: "xiàwǔ sì diǎn" }, { hanzi: "下班", pinyin: "xiàbān" }],
-        correct: ["她", "下午四点", "下班"]
-      });
-      questions.push({
-        prompt: { th: "แม่นั่งรถยนต์ไปทำงาน", en: "Mother goes to work by car." },
-        words: [{ hanzi: "她", pinyin: "Tā" }, { hanzi: "坐汽车", pinyin: "zuò qìchē" }, { hanzi: "去上班", pinyin: "qù shàngbān" }],
-        correct: ["她", "坐汽车", "去上班"]
+        prompt: { th: "พวกเขานั่งรถยนต์ไปทำงาน", en: "They go to work by car." },
+        words: [
+          { hanzi: "他们", pinyin: "Tāmen", meaning: { th: "พวกเขา", en: "they" } },
+          { hanzi: "坐汽车", pinyin: "zuò qìchē", meaning: { th: "นั่งรถยนต์", en: "by car" } },
+          { hanzi: "去上班", pinyin: "qù shàngbān", meaning: { th: "ไปทำงาน", en: "go to work" } }
+        ],
+        correct: ["他们", "坐汽车", "去上班"]
       });
 
       // ข้อมูลพี่น้อง (ถ้ามี)
@@ -679,73 +738,98 @@
           }
         }
 
-        if (totalSibCount === 1) {
-          const singleSib = sibItems[0];
-          questions.push({
-            prompt: { th: `${singleSib.th}ของฉันเป็นนักเรียน`, en: `My ${singleSib.en} is a student.` },
-            words: [{ hanzi: `我${singleSib.hanzi}`, pinyin: `Wǒ ${singleSib.pinyin}` }, { hanzi: "是", pinyin: "shì" }, { hanzi: "一名", pinyin: "yì míng" }, { hanzi: "学生", pinyin: "xuésheng" }],
-            correct: [`我${singleSib.hanzi}`, "是", "一名", "学生"]
-          });
-        } else {
-          const sibWords = [{ hanzi: "我", pinyin: "Wǒ" }];
-          const sibCorrect = ["我"];
-          sibItems.forEach((item, idx) => {
-            sibWords.push({ hanzi: item.hanzi, pinyin: item.pinyin });
-            sibCorrect.push(item.hanzi);
-            if (idx === sibItems.length - 2) {
-              sibWords.push({ hanzi: "和", pinyin: "hé" });
-              sibCorrect.push("和");
-            }
-          });
-          sibWords.push({ hanzi: "都是", pinyin: "dōu shì" }, { hanzi: "学生", pinyin: "xuésheng" });
-          sibCorrect.push("都是", "学生");
-
-          questions.push({
-            prompt: { th: "พี่น้องของฉันทุกคนล้วนเป็นนักเรียน", en: "My siblings are all students." },
-            words: sibWords,
-            correct: sibCorrect
-          });
-        }
+        // พี่น้องและฉันเป็นนักเรียน
+        const sibWords = [];
+        const sibCorrect = [];
+        sibItems.forEach((item, idx) => {
+          sibWords.push({ hanzi: item.hanzi, pinyin: item.pinyin, meaning: { th: item.th, en: item.en } });
+          sibCorrect.push(item.hanzi);
+          if (idx === sibItems.length - 1) {
+            sibWords.push({ hanzi: "和我", pinyin: "hé wǒ", meaning: { th: "และฉัน", en: "and I" } });
+            sibCorrect.push("和我");
+          }
+        });
+        sibWords.push(
+          { hanzi: "都是", pinyin: "dōu shì", meaning: { th: "ล้วนเป็น", en: "all are" } },
+          { hanzi: "学生", pinyin: "xuésheng", meaning: { th: "นักเรียน", en: "student" } }
+        );
+        sibCorrect.push("都是", "学生");
 
         questions.push({
-          prompt: { th: `${pronounTh}ไปโรงเรียนตอน 7 โมงครึ่งเช้า`, en: `${pronounEn} go to school at 7:30 AM.` },
-          words: [{ hanzi: pronounHanzi, pinyin: pronounPinyin }, { hanzi: "早上七点半", pinyin: "zǎoshang qī diǎn bàn" }, { hanzi: "去学校", pinyin: "qù xuéxiào" }],
-          correct: [pronounHanzi, "早上七点半", "去学校"]
+          prompt: { th: "พี่น้องและฉันเป็นนักเรียน", en: "My siblings and I are students." },
+          words: sibWords,
+          correct: sibCorrect
+        });
+
+        // พวกเราไปโรงเรียน (รวมพี่น้องและตัวเอง)
+        questions.push({
+          prompt: { th: "พวกเราไปโรงเรียนตอน 7 โมงครึ่งเช้า", en: "We go to school at 7:30 AM." },
+          words: [
+            { hanzi: "我们", pinyin: "Wǒmen", meaning: { th: "พวกเรา", en: "we" } },
+            { hanzi: "早上七点半", pinyin: "zǎoshang qī diǎn bàn", meaning: { th: "7:30 เช้า", en: "7:30 AM" } },
+            { hanzi: "去学校", pinyin: "qù xuéxiào", meaning: { th: "ไปโรงเรียน", en: "go to school" } }
+          ],
+          correct: ["我们", "早上七点半", "去学校"]
         });
 
         questions.push({
-          prompt: { th: `${pronounTh}นั่งรถโรงเรียนไปโรงเรียน`, en: `${pronounEn} go to school by school bus.` },
-          words: [{ hanzi: pronounHanzi, pinyin: pronounPinyin }, { hanzi: "坐校车", pinyin: "zuò xiàochē" }, { hanzi: "去学校", pinyin: "qù xuéxiào" }],
-          correct: [pronounHanzi, "坐校车", "去学校"]
+          prompt: { th: "พวกเรานั่งรถไปโรงเรียน", en: "We go to school by car." },
+          words: [
+            { hanzi: "我们", pinyin: "Wǒmen", meaning: { th: "พวกเรา", en: "we" } },
+            { hanzi: "坐汽车", pinyin: "zuò qìchē", meaning: { th: "นั่งรถ", en: "by car" } },
+            { hanzi: "去学校", pinyin: "qù xuéxiào", meaning: { th: "ไปโรงเรียน", en: "go to school" } }
+          ],
+          correct: ["我们", "坐汽车", "去学校"]
+        });
+      } else {
+        // ไม่มีพี่น้อง - เล่าแต่ตัวเอง
+        questions.push({
+          prompt: { th: "ฉันเป็นนักเรียน", en: "I am a student." },
+          words: [
+            { hanzi: "我", pinyin: "Wǒ", meaning: { th: "ฉัน", en: "I" } },
+            { hanzi: "是", pinyin: "shì", meaning: { th: "เป็น", en: "am" } },
+            { hanzi: "学生", pinyin: "xuésheng", meaning: { th: "นักเรียน", en: "student" } }
+          ],
+          correct: ["我", "是", "学生"]
+        });
+        questions.push({
+          prompt: { th: "ฉันไปโรงเรียนตอน 7 โมงครึ่งเช้า", en: "I go to school at 7:30 AM." },
+          words: [
+            { hanzi: "我", pinyin: "Wǒ", meaning: { th: "ฉัน", en: "I" } },
+            { hanzi: "早上七点半", pinyin: "zǎoshang qī diǎn bàn", meaning: { th: "7:30 เช้า", en: "7:30 AM" } },
+            { hanzi: "去学校", pinyin: "qù xuéxiào", meaning: { th: "ไปโรงเรียน", en: "go to school" } }
+          ],
+          correct: ["我", "早上七点半", "去学校"]
+        });
+        questions.push({
+          prompt: { th: "ฉันนั่งรถไปโรงเรียน", en: "I go to school by car." },
+          words: [
+            { hanzi: "我", pinyin: "Wǒ", meaning: { th: "ฉัน", en: "I" } },
+            { hanzi: "坐汽车", pinyin: "zuò qìchē", meaning: { th: "นั่งรถ", en: "by car" } },
+            { hanzi: "去学校", pinyin: "qù xuéxiào", meaning: { th: "ไปโรงเรียน", en: "go to school" } }
+          ],
+          correct: ["我", "坐汽车", "去学校"]
         });
       }
-
-      // ข้อมูลตัวฉัน
-      questions.push({
-        prompt: { th: "ฉันเป็นนักเรียน", en: "I am a student." },
-        words: [{ hanzi: "我", pinyin: "Wǒ" }, { hanzi: "是", pinyin: "shì" }, { hanzi: "学生", pinyin: "xuésheng" }],
-        correct: ["我", "是", "学生"]
-      });
-      questions.push({
-        prompt: { th: "ฉันไปโรงเรียนตอน 7 โมงครึ่งทุกวัน", en: "I go to school at 7:30 AM every day." },
-        words: [{ hanzi: "我每天", pinyin: "Wǒ měitiān" }, { hanzi: "早上七点半", pinyin: "zǎoshang qī diǎn bàn" }, { hanzi: "去学校", pinyin: "qù xuéxiào" }],
-        correct: ["我每天", "早上七点半", "去学校"]
-      });
-      questions.push({
-        prompt: { th: "ฉันนั่งรถโรงเรียนไปโรงเรียน", en: "I go to school by school bus." },
-        words: [{ hanzi: "我", pinyin: "Wǒ" }, { hanzi: "坐校车", pinyin: "zuò xiàochē" }, { hanzi: "去学校", pinyin: "qù xuéxiào" }],
-        correct: ["我", "坐校车", "去学校"]
-      });
 
       // บทสรุปจบและขอบคุณ
       questions.push({
         prompt: { th: "ฉันรักคนในครอบครัวของฉันมาก", en: "I love my family very much." },
-        words: [{ hanzi: "我很爱", pinyin: "Wǒ hěn ài" }, { hanzi: "我的", pinyin: "wǒ de" }, { hanzi: "家人", pinyin: "jiārén" }],
+        words: [
+          { hanzi: "我很爱", pinyin: "Wǒ hěn ài", meaning: { th: "ฉันรัก", en: "I love" } },
+          { hanzi: "我的", pinyin: "wǒ de", meaning: { th: "ของฉัน", en: "my" } },
+          { hanzi: "家人", pinyin: "jiārén", meaning: { th: "ครอบครัว", en: "family" } }
+        ],
         correct: ["我很爱", "我的", "家人"]
       });
       questions.push({
         prompt: { th: "และนี่คือครอบครัวของฉัน ขอบคุณทุกคนครับ/ค่ะ!", en: "This is my family. Thank you everyone!" },
-        words: [{ hanzi: "这就是", pinyin: "Zhè jiù shì" }, { hanzi: "我的", pinyin: "wǒ de" }, { hanzi: "家庭", pinyin: "jiātíng" }, { hanzi: "谢谢大家", pinyin: "Xièxie dàjiā" }],
+        words: [
+          { hanzi: "这就是", pinyin: "Zhè jiù shì", meaning: { th: "นี่คือ", en: "this is" } },
+          { hanzi: "我的", pinyin: "wǒ de", meaning: { th: "ของฉัน", en: "my" } },
+          { hanzi: "家庭", pinyin: "jiātíng", meaning: { th: "ครอบครัว", en: "family" } },
+          { hanzi: "谢谢大家", pinyin: "Xièxie dàjiā", meaning: { th: "ขอบคุณทุกคน", en: "thank you everyone" } }
+        ],
         correct: ["这就是", "我的", "家庭", "谢谢大家"]
       });
 
@@ -772,27 +856,35 @@
 
     function createWordElement(wordObj, isSelected = false, status = 'default') {
       const btn = document.createElement('button');
-      
-      let colorClasses = 'bg-white hover:bg-amber-100 border border-amber-300 text-slate-800';
-      let pinyinColor = 'text-amber-600';
+
+      let colorClasses = 'bg-white hover:bg-sky-100 border border-sky-300 text-slate-800';
+      let pinyinColor = 'text-sky-600';
+      let meaningColor = 'text-slate-400';
 
       if (isSelected) {
         if (status === 'correct') {
-          colorClasses = 'bg-emerald-600 text-white border border-emerald-700 shadow-md';
-          pinyinColor = 'text-emerald-100';
+          colorClasses = 'bg-blue-600 text-white border border-blue-700 shadow-md';
+          pinyinColor = 'text-blue-100';
+          meaningColor = 'text-blue-200';
         } else if (status === 'wrong') {
-          colorClasses = 'bg-rose-500 text-white border border-rose-600 shadow-md animate-bounce';
-          pinyinColor = 'text-rose-100';
+          colorClasses = 'bg-indigo-500 text-white border border-indigo-600 shadow-md animate-bounce';
+          pinyinColor = 'text-indigo-100';
+          meaningColor = 'text-indigo-200';
         } else {
-          colorClasses = 'bg-amber-500 hover:bg-rose-500 text-white shadow';
-          pinyinColor = 'text-amber-100';
+          colorClasses = 'bg-sky-500 hover:bg-indigo-500 text-white shadow';
+          pinyinColor = 'text-sky-100';
+          meaningColor = 'text-sky-200';
         }
       }
+
+      const meaningText = showMeaning && wordObj.meaning ? wordObj.meaning[currentLang] : '';
+      const meaningHtml = meaningText ? `<span class="text-[10px] leading-tight font-normal ${meaningColor}">${meaningText}</span>` : '';
 
       btn.className = `word-btn flex flex-col items-center justify-center px-3.5 py-1.5 rounded-xl shadow-sm transition ${colorClasses}`;
       btn.innerHTML = `
         <span class="text-[11px] leading-tight font-normal ${pinyinColor}">${wordObj.pinyin}</span>
         <span class="text-base font-bold leading-snug">${wordObj.hanzi}</span>
+        ${meaningHtml}
       `;
       return btn;
     }
@@ -809,9 +901,15 @@
       hintBox.innerText = '';
       speakingSection.classList.add('hidden');
       btnNext.classList.add('hidden');
+      btnBack.classList.add('hidden');
       btnCheck.classList.remove('hidden');
       btnSkip.classList.remove('hidden');
       speechResult.innerText = '';
+
+      // Show back button if not on first question
+      if (currentIndex > 0) {
+        btnBack.classList.remove('hidden');
+      }
       micStatus.innerText = uiText[currentLang].mic_instruction;
 
       const shuffled = [...q.words].sort(() => Math.random() - 0.5);
@@ -871,6 +969,10 @@
         btnCheck.classList.add('hidden');
         btnSkip.classList.add('hidden');
         btnNext.classList.remove('hidden');
+        // Show back button if not on first question when answered correctly
+        if (currentIndex > 0) {
+          btnBack.classList.remove('hidden');
+        }
         score += 10;
         scoreIndicator.innerText = `${uiText[currentLang].score_prefix} ${score} ⭐`;
       } else {
@@ -879,7 +981,7 @@
         renderTargetZone(validation);
 
         hintBox.classList.remove('hidden');
-        hintBox.className = "mt-2 p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700 animate-pulse";
+        hintBox.className = "mt-2 p-2.5 rounded-xl text-xs font-semibold bg-indigo-50 border border-indigo-200 text-indigo-700 animate-pulse";
         
         if (userOrder.length < q.correct.length) {
           hintBox.innerText = uiText[currentLang].hint_incomplete;
@@ -902,29 +1004,55 @@
 
       renderTargetZone(userOrder.map(() => true));
       hintBox.classList.remove('hidden');
-      hintBox.className = "mt-2 p-2.5 rounded-xl text-xs font-semibold bg-amber-50 border border-amber-200 text-amber-800";
+      hintBox.className = "mt-2 p-2.5 rounded-xl text-xs font-semibold bg-sky-50 border border-sky-200 text-sky-700";
       hintBox.innerText = uiText[currentLang].hint_revealed;
 
       speakingSection.classList.remove('hidden');
       btnCheck.classList.add('hidden');
       btnSkip.classList.add('hidden');
       btnNext.classList.remove('hidden');
+      // Show back button if not on first question when answer revealed
+      if (currentIndex > 0) {
+        btnBack.classList.remove('hidden');
+      }
     };
 
     btnSkip.onclick = () => {
       btnShowHint.click(); // เฉลยให้ทันทีแล้วให้ฝึกอ่านต่อ
     };
 
-    btnReset.onclick = () => loadQuestion(currentIndex);
+    btnReset.onclick = () => {
+      // Check if game is finished (all questions completed)
+      if (currentIndex >= questions.length) {
+        // Go back to setup screen with existing values preserved
+        gameScreen.classList.add('hidden');
+        gameScreen.classList.remove('flex');
+        setupScreen.classList.remove('hidden');
+        // Reset game state for next time
+        currentIndex = 0;
+        score = 0;
+      } else {
+        // Just reset current question
+        loadQuestion(currentIndex);
+      }
+    };
+
+    btnBack.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        loadQuestion(currentIndex);
+      }
+    };
 
     btnNext.onclick = () => {
       currentIndex++;
       if (currentIndex < questions.length) {
         loadQuestion(currentIndex);
       } else {
-        targetZone.innerHTML = `<span class="text-emerald-600 font-bold">${uiText[currentLang].all_done_msg}</span>`;
+        targetZone.innerHTML = `<span class="text-blue-600 font-bold">${uiText[currentLang].all_done_msg}</span>`;
         sourceZone.innerHTML = '';
         btnNext.classList.add('hidden');
+        btnBack.classList.add('hidden');
         btnCheck.classList.add('hidden');
         btnSkip.classList.add('hidden');
         speakingSection.classList.add('hidden');
@@ -955,7 +1083,7 @@
         if (!isListening) {
           try {
             recognition.start();
-            btnMic.classList.add('mic-pulse', 'bg-red-600');
+            btnMic.classList.add('mic-pulse', 'bg-blue-600');
             micStatus.innerText = uiText[currentLang].mic_listening;
             isListening = true;
           } catch (e) {
@@ -970,23 +1098,23 @@
         speechResult.innerText = `${uiText[currentLang].mic_heard_prefix} "${spokenText}"`;
 
         if (spokenText.includes(targetText) || targetText.includes(spokenText)) {
-          speechResult.className = "text-sm font-bold text-emerald-600 mt-2";
+          speechResult.className = "text-sm font-bold text-blue-600 mt-2";
           speechResult.innerText += uiText[currentLang].mic_perfect;
           confetti({ particleCount: 40, spread: 50 });
         } else {
-          speechResult.className = "text-sm font-semibold text-amber-600 mt-2";
+          speechResult.className = "text-sm font-semibold text-sky-600 mt-2";
           speechResult.innerText += uiText[currentLang].mic_close;
         }
       };
 
       recognition.onend = () => {
-        btnMic.classList.remove('mic-pulse', 'bg-red-600');
+        btnMic.classList.remove('mic-pulse', 'bg-blue-600');
         micStatus.innerText = uiText[currentLang].mic_try_again;
         isListening = false;
       };
 
       recognition.onerror = (event) => {
-        btnMic.classList.remove('mic-pulse', 'bg-red-600');
+        btnMic.classList.remove('mic-pulse', 'bg-blue-600');
         isListening = false;
         if (event.error === 'not-allowed') {
           micStatus.innerText = uiText[currentLang].mic_err_permission;
