@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 4 English Exam</title>
+  <style>
+    :root {
+      --blue-50: #f6fbff;
+      --blue-100: #e9f5ff;
+      --blue-200: #cfeaff;
+      --blue-300: #a9d8f5;
+      --blue-500: #4f9bc8;
+      --blue-700: #24678f;
+      --ink: #20313d;
+      --muted: #647985;
+      --white: #ffffff;
+      --green: #24855a;
+      --green-bg: #e8f8ef;
+      --red: #b84c58;
+      --red-bg: #fff0f2;
+      --shadow: 0 12px 30px rgba(66, 128, 163, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(860px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--blue-700);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--blue-200);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 4vw, 38px);
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      background: var(--blue-100);
+      color: var(--blue-700);
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .progress-wrap {
+      height: 9px;
+      background: var(--blue-100);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0;
+      background: var(--blue-500);
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .question-category {
+      color: var(--blue-700);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .question {
+      margin: 10px 0 25px;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    .choices {
+      display: grid;
+      gap: 12px;
+    }
+
+    .choice {
+      width: 100%;
+      text-align: left;
+      border: 1.5px solid var(--blue-200);
+      background: var(--white);
+      color: var(--ink);
+      border-radius: 13px;
+      padding: 15px 17px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.18s ease;
+    }
+
+    .choice:hover {
+      border-color: var(--blue-500);
+      background: var(--blue-50);
+    }
+
+    .choice.selected {
+      border-color: var(--blue-500);
+      background: var(--blue-100);
+      box-shadow: inset 0 0 0 1px var(--blue-500);
+    }
+
+    .choice-letter {
+      display: inline-grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background: var(--blue-100);
+      color: var(--blue-700);
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-weight: 700;
+      transition: 0.18s ease;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      background: var(--blue-100);
+      color: var(--blue-700);
+    }
+
+    .secondary-btn:hover:not(:disabled) {
+      background: var(--blue-200);
+    }
+
+    .primary-btn {
+      background: var(--blue-500);
+      color: white;
+    }
+
+    .primary-btn:hover:not(:disabled) {
+      background: var(--blue-700);
+      transform: translateY(-1px);
+    }
+
+    .submit-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .result {
+      text-align: center;
+    }
+
+    .result h2 {
+      color: var(--blue-700);
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .score-circle {
+      display: grid;
+      place-items: center;
+      margin: 24px auto;
+      width: 150px;
+      height: 150px;
+      border: 10px solid var(--blue-200);
+      border-radius: 50%;
+      color: var(--blue-700);
+      background: var(--blue-50);
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .score-circle span {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .review-title {
+      margin: 38px 0 15px;
+      color: var(--blue-700);
+      text-align: left;
+    }
+
+    .review-item {
+      text-align: left;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 13px;
+      border: 1px solid #ffd9de;
+      background: var(--red-bg);
+    }
+
+    .review-item h3 {
+      margin: 0 0 11px;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .review-item p {
+      margin: 7px 0;
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .your-answer {
+      color: var(--red);
+    }
+
+    .correct-answer {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .explanation {
+      color: var(--muted);
+    }
+
+    .all-correct {
+      border: 1px solid #bde7cf;
+      background: var(--green-bg);
+      color: var(--green);
+      padding: 18px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 520px) {
+      .actions {
+        flex-wrap: wrap;
+      }
+
+      .actions button {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>Grade 4 English Exam</h1>
+      <p>30 questions are randomly selected from a 300-question pool.</p>
+    </header>
+
+    <section id="quizCard" class="card">
+      <div class="top-row">
+        <div id="questionNumber" class="pill">Question 1 of 30</div>
+        <div id="answeredCount" class="pill">Answered: 0 / 30</div>
+      </div>
+
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress"></div>
+      </div>
+
+      <div id="questionCategory" class="question-category"></div>
+      <h2 id="questionText" class="question"></h2>
+      <div id="choices" class="choices"></div>
+
+      <div class="actions">
+        <button id="previousBtn" class="secondary-btn">← Previous</button>
+        <button id="nextBtn" class="primary-btn">Next →</button>
+      </div>
+
+      <div class="submit-row">
+        <button id="submitBtn" class="primary-btn">Check My Answers</button>
+      </div>
+    </section>
+
+    <section id="resultCard" class="card result hidden">
+      <h2>Round Complete!</h2>
+      <p id="resultMessage"></p>
+
+      <div id="scoreCircle" class="score-circle"></div>
+
+      <div id="reviewArea"></div>
+
+      <div class="submit-row">
+        <button id="newRoundBtn" class="primary-btn">Start a New Round</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ---------- Helpers ----------
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function makeQuestion(category, question, correct, wrongAnswers, explanation) {
+      const options = shuffle([correct, ...wrongAnswers].slice(0, 4));
+      return {
+        category,
+        question,
+        options,
+        answer: options.indexOf(correct),
+        correct,
+        explanation
+      };
+    }
+
+    const pool = [];
+
+    function add(category, question, correct, wrongAnswers, explanation) {
+      pool.push(makeQuestion(category, question, correct, wrongAnswers, explanation));
+    }
+
+    // ---------- 1. Vocabulary: 40 questions ----------
+    const vocabulary = [
+      ["elegant", "stylish and pleasant to look at"],
+      ["foreboding", "a feeling that something bad may happen"],
+      ["episode", "an important event or period of time"],
+      ["scowled", "had an angry frown"],
+      ["intimidated", "afraid or nervous because someone or something seems powerful"],
+      ["subdued", "quiet and low-key"],
+      ["disheveled", "not neat or tidy"],
+      ["rigid", "stiff and not easy to bend"],
+      ["feisty", "bold, energetic, and determined"],
+      ["sulked", "showed annoyance by being quiet and unhappy"],
+      ["timid", "shy, careful, and often fearful"],
+      ["strenuous", "requiring a lot of effort or energy"],
+      ["aspire", "to strongly hope to achieve something"],
+      ["confidence", "a strong and sure belief in yourself"],
+      ["endeavor", "to try very hard to do something"],
+      ["fearlessness", "the quality of being brave and not scared"],
+      ["parachute", "a fabric umbrella that slows a fall from high above"],
+      ["trainee", "a person learning how to do a new job"],
+      ["firebreak", "a cleared strip of land that helps stop a fire spreading"],
+      ["available", "ready to be used or not busy"]
+    ];
+
+    const definitionDistractors = [
+      "a person who teaches a class",
+      "very easy and requiring little effort",
+      "a noisy celebration",
+      "a place where animals sleep"
+    ];
+
+    vocabulary.forEach(([word, definition]) => {
+      add(
+        "Vocabulary",
+        `What does <strong>${word}</strong> mean?`,
+        definition,
+        definitionDistractors,
+        `"${word}" means ${definition}.`
+      );
+
+      add(
+        "Vocabulary",
+        `Choose the best word: “Mia was not <strong>_____</strong>; she was ready to help anyone.”`,
+        word === "timid" ? "timid" : word,
+        ["happy", "tiny", "sleepy"],
+        `The correct spelling word is "${word}".`
+      );
+    });
+
+    // Replace the second vocabulary question with accurate context questions.
+    pool.splice(1, 39);
+    const vocabContext = [
+      ["The princess wore an _____ dress to the party.", "elegant", ["rigid", "timid", "strenuous"]],
+      ["The dark clouds gave the hikers a _____ feeling.", "foreboding", ["confidence", "episode", "firebreak"]],
+      ["The storm was an exciting _____ in our camping trip.", "episode", ["endeavor", "trainee", "parachute"]],
+      ["Ben _____ when his sister took his game.", "scowled", ["aspired", "available", "parachuted"]],
+      ["The new student felt _____ by the loud crowd.", "intimidated", ["elegant", "available", "fearless"]],
+      ["After the busy party, the room became quiet and _____.", "subdued", ["feisty", "rigid", "disheveled"]],
+      ["After playing outside in the wind, Kai's hair was _____.", "disheveled", ["elegant", "subdued", "available"]],
+      ["The frozen ruler was _____ and would not bend.", "rigid", ["timid", "elegant", "subdued"]],
+      ["The _____ puppy barked bravely at the big dog.", "feisty", ["timid", "subdued", "rigid"]],
+      ["Nora _____ after she could not go to the park.", "sulked", ["scowled", "endeavored", "aspired"]],
+      ["The _____ child spoke very softly to strangers.", "timid", ["feisty", "rigid", "elegant"]],
+      ["Climbing the mountain was a _____ activity.", "strenuous", ["available", "subdued", "timid"]],
+      ["I _____ to become a scientist one day.", "aspire", ["sulk", "scowl", "parachute"]],
+      ["Practice gave Omar the _____ to speak in front of the class.", "confidence", ["foreboding", "episode", "firebreak"]],
+      ["Finishing the project was a difficult _____, but we tried hard.", "endeavor", ["parachute", "trainee", "episode"]],
+      ["The firefighter showed _____ when she entered the burning building.", "fearlessness", ["timidity", "foreboding", "subdued"]],
+      ["The skydiver opened a _____ before landing.", "parachute", ["firebreak", "episode", "endeavor"]],
+      ["The _____ is learning how to repair cars.", "trainee", ["firebreak", "episode", "parachute"]],
+      ["The firefighters made a _____ to slow the forest fire.", "firebreak", ["parachute", "episode", "confidence"]],
+      ["This book is _____ at the library today.", "available", ["rigid", "timid", "disheveled"]]
+    ];
+
+    vocabContext.forEach(([sentence, correct, wrong]) => {
+      add(
+        "Vocabulary",
+        `Choose the best word: “${sentence}”`,
+        correct,
+        wrong,
+        `"${correct}" correctly completes the sentence.`
+      );
+    });
+
+    // ---------- 2. Verb "to be": 30 questions ----------
+    const beSubjects = [
+      ["I", "am"], ["You", "are"], ["We", "are"], ["They", "are"],
+      ["He", "is"], ["She", "is"], ["It", "is"], ["The dog", "is"],
+      ["My friends", "are"], ["The children", "are"]
+    ];
+    const beEndings = ["ready for class.", "happy today.", "in the classroom."];
+
+    beSubjects.forEach(([subject, form]) => {
+      beEndings.forEach(ending => {
+        add(
+          "Verb To Be",
+          `Choose the correct word: “${subject} _____ ${ending}”`,
+          form,
+          ["am", "is", "are"].filter(x => x !== form),
+          `Use "${form}" with "${subject}".`
+        );
+      });
+    });
+
+    // ---------- 3. Present simple: 30 questions ----------
+    const presentVerbs = [
+      ["I", "walk", "walks", "to school"],
+      ["You", "read", "reads", "books at night"],
+      ["We", "play", "plays", "after school"],
+      ["They", "eat", "eats", "lunch together"],
+      ["He", "walk", "walks", "to school"],
+      ["She", "read", "reads", "books at night"],
+      ["My brother", "play", "plays", "soccer on Saturdays"],
+      ["The bird", "sing", "sings", "in the morning"],
+      ["Sarah", "finish", "finishes", "her homework"],
+      ["The baby", "cry", "cries", "when tired"]
+    ];
+
+    ["every day", "usually", "on Mondays"].forEach(time => {
+      presentVerbs.forEach(([subject, base, third, ending]) => {
+        const answer = ["He", "She", "My brother", "The bird", "Sarah", "The baby"].includes(subject) ? third : base;
+        add(
+          "Present Simple",
+          `Choose the correct verb: “${subject} _____ ${ending} ${time}.”`,
+          answer,
+          shuffle([base, third, "is " + base + "ing", base + "ed"]).filter(x => x !== answer).slice(0, 3),
+          `The present simple uses "${answer}" with this subject.`
+        );
+      });
+    });
+
+    // ---------- 4. Present continuous: 30 questions ----------
+    const continuousSubjects = [
+      ["I", "am"], ["You", "are"], ["We", "are"], ["They", "are"], ["He", "is"],
+      ["She", "is"], ["The dog", "is"], ["My friends", "are"], ["The children", "are"], ["It", "is"]
+    ];
+    const continuousVerbs = ["reading", "singing", "working"];
+
+    continuousSubjects.forEach(([subject, be]) => {
+      continuousVerbs.forEach(verb => {
+        add(
+          "Present Continuous",
+          `Choose the correct answer: “${subject} _____ ${verb} right now.”`,
+          `${be} ${verb}`,
+          [`${be} ${verb.replace("ing", "")}`, verb, `${be} ${verb}ed`],
+          `The present continuous uses "${be}" + a verb ending in -ing.`
+        );
+      });
+    });
+
+    // ---------- 5. Past simple: 30 questions ----------
+    const pastVerbs = [
+      ["Yesterday, I", "walk", "walked", "home"],
+      ["Last night, she", "watch", "watched", "a movie"],
+      ["Yesterday, we", "play", "played", "outside"],
+      ["Last week, he", "jump", "jumped", "high"],
+      ["Yesterday, they", "clean", "cleaned", "the room"],
+      ["Last summer, I", "swim", "swam", "in the lake"],
+      ["Yesterday, she", "drive", "drove", "to town"],
+      ["Last night, he", "write", "wrote", "a letter"],
+      ["Yesterday, the cat", "catch", "caught", "a mouse"],
+      ["Last weekend, we", "run", "ran", "in the park"]
+    ];
+
+    ["", "after school", "with my family"].forEach(extra => {
+      pastVerbs.forEach(([starter, base, past, ending]) => {
+        add(
+          "Past Simple",
+          `Choose the correct verb: “${starter} _____ ${ending} ${extra}.”`,
+          past,
+          [base, base + "ed", "is " + base + "ing"],
+          `"${past}" is the correct past-tense form of "${base}".`
+        );
+      });
+    });
+
+    // ---------- 6. Negatives and questions: 30 questions ----------
+    const auxiliaries = [
+      ["He", "like", "does not like", "Does", "like"],
+      ["She", "want", "does not want", "Does", "want"],
+      ["The dog", "eat", "does not eat", "Does", "eat"],
+      ["My sister", "play", "does not play", "Does", "play"],
+      ["They", "like", "do not like", "Do", "like"],
+      ["We", "want", "do not want", "Do", "want"],
+      ["I", "play", "do not play", "Do", "play"],
+      ["You", "read", "do not read", "Do", "read"],
+      ["He", "finish", "did not finish", "Did", "finish"],
+      ["They", "visit", "did not visit", "Did", "visit"]
+    ];
+
+    auxiliaries.forEach(([subject, verb, negative, questionWord]) => {
+      add(
+        "Negative Verbs",
+        `Choose the correct answer: “${subject} _____ ice cream.”`,
+        negative,
+        [verb + " not", "not " + verb, "doesn't " + verb + "s"],
+        `Use "${negative}" for the correct negative form.`
+      );
+
+      add(
+        "Yes/No Questions",
+        `Choose the correct question.`,
+        `${questionWord} ${subject.toLowerCase()} ${verb} ice cream?`,
+        [
+          `${subject} ${questionWord.toLowerCase()} ${verb} ice cream?`,
+          `${questionWord} ${subject.toLowerCase()} ${verb}s ice cream?`,
+          `${subject} ${verb} ice cream?`
+        ],
+        `Start this yes/no question with "${questionWord}" and use the base verb "${verb}".`
+      );
+
+      add(
+        "Sentence Skills",
+        `Which sentence is correct?`,
+        `${subject} ${negative} ice cream.`,
+        [
+          `${subject} not ${verb} ice cream.`,
+          `${subject} ${negative} ice creams.`,
+          `${subject} ${verb} not ice cream.`
+        ],
+        `The correct negative sentence is "${subject} ${negative} ice cream."`
+      );
+    });
+
+    // ---------- 7. Future tense: 20 questions ----------
+    const futureSubjects = [
+      ["I", "am"], ["You", "are"], ["We", "are"], ["They", "are"], ["He", "is"],
+      ["She", "is"], ["The dog", "is"], ["My friends", "are"], ["The children", "are"], ["It", "is"]
+    ];
+
+    futureSubjects.forEach(([subject, form]) => {
+      add(
+        "Future Tense",
+        `Choose the correct answer: “${subject} _____ going to visit the museum tomorrow.”`,
+        form,
+        ["am", "is", "are"].filter(x => x !== form),
+        `Use "${form} going to" to talk about a future plan.`
+      );
+
+      add(
+        "Future Tense",
+        `Choose the best future-tense sentence.`,
+        `${subject} ${form} going to draw a picture.`,
+        [
+          `${subject} ${form} draw a picture yesterday.`,
+          `${subject} drawing a picture tomorrow.`,
+          `${subject} ${form} drew a picture tomorrow.`
+        ],
+        `The future form is "${subject} ${form} going to draw."`
+      );
+    });
+
+    // ---------- 8. Adverbs and adjectives: 30 questions ----------
+    const adverbs = [
+      ["quiet", "quietly"], ["slow", "slowly"], ["quick", "quickly"], ["gentle", "gently"],
+      ["heavy", "heavily"], ["beautiful", "beautifully"], ["soft", "softly"], ["careful", "carefully"],
+      ["happy", "happily"], ["loud", "loudly"]
+    ];
+
+    adverbs.forEach(([adjective, adverb]) => {
+      add(
+        "Adverbs",
+        `Choose the correct word: “The students listened _____ to the teacher.”`,
+        adverb,
+        [adjective, adjective + "ness", "very " + adjective],
+        `"${adverb}" is an adverb. It tells how the students listened.`
+      );
+
+      add(
+        "Adjectives and Adverbs",
+        `Which word is an adverb?`,
+        adverb,
+        [adjective, "teacher", "classroom"],
+        `Adverbs often end in -ly and describe how an action happens.`
+      );
+
+      add(
+        "Sentence Combining",
+        `Choose the best combined sentence: “The choir sang the song. The choir sang beautifully.”`,
+        "The choir sang the song beautifully.",
+        [
+          "The beautiful choir sang the song.",
+          "The choir beautifully song sang.",
+          "The choir sang beautiful the song."
+        ],
+        `"Beautifully" tells how the choir sang.`
+      );
+    });
+
+    // ---------- 9. Prepositions: 20 questions ----------
+    const prepositions = [
+      ["The book is _____ the table.", "on", ["in", "behind", "at"]],
+      ["The cat is hiding _____ the chair.", "behind", ["on", "at", "from"]],
+      ["The ball is _____ the box.", "in", ["on", "behind", "at"]],
+      ["The lamp is _____ the bed.", "beside", ["in", "from", "under"]],
+      ["We eat lunch _____ noon.", "at", ["on", "in", "behind"]],
+      ["My birthday is _____ May.", "in", ["at", "on", "beside"]],
+      ["School starts _____ Monday.", "on", ["in", "at", "behind"]],
+      ["The shoes are _____ the bed.", "under", ["on", "at", "in"]],
+      ["The bird flew _____ the tree.", "above", ["in", "at", "beside"]],
+      ["The children stood _____ the door.", "near", ["in", "on", "from"]]
+    ];
+
+    prepositions.forEach(([sentence, correct, wrong]) => {
+      add(
+        "Prepositions",
+        `Choose the correct preposition: “${sentence}”`,
+        correct,
+        wrong,
+        `"${correct}" correctly shows the relationship between the words.`
+      );
+
+      add(
+        "Prepositions",
+        `Which sentence uses <strong>${correct}</strong> correctly?`,
+        sentence.replace("_____", correct),
+        [
+          `The book is ${correct} happy.`,
+          `We ${correct} play soccer.`,
+          `She is ${correct} quickly.`
+        ],
+        `The correct sentence uses "${correct}" to show place or time.`
+      );
+    });
+
+    // ---------- 10. Sentence skills: 20 questions ----------
+    const sentenceSkills = [
+      [
+        "Which sentence is written correctly?",
+        "Yesterday, we played soccer.",
+        ["yesterday we played soccer.", "Yesterday we played soccer", "yesterday, We played soccer."],
+        "A complete sentence begins with a capital letter and ends with punctuation."
+      ],
+      [
+        "Which sentence is written correctly?",
+        "My friend and I went to the library.",
+        ["my friend and I went to the library.", "My friend and i went to the library.", "My friend and I went to the library"],
+        "Use a capital letter for the first word and for the pronoun I."
+      ],
+      [
+        "Choose the best combined sentence.",
+        "The children played happily outside.",
+        ["The children happily outside played.", "The happy children played outside happily.", "The children played outside happy."],
+        "The adverb happily tells how the children played."
+      ],
+      [
+        "Choose the best combined sentence.",
+        "We went on a long hike.",
+        ["We went on a hike long.", "We long went on a hike.", "We went a long on hike."],
+        "The adjective long describes the noun hike."
+      ],
+      [
+        "Which question is correct?",
+        "Did you finish your homework?",
+        ["You did finish your homework?", "Did you finished your homework?", "Finished you your homework?"],
+        "Use Did + subject + base verb in a past-tense yes/no question."
+      ],
+      [
+        "Which question is correct?",
+        "Does your sister like music?",
+        ["Does your sister likes music?", "Your sister does like music?", "Do your sister like music?"],
+        "Use Does with one person, then use the base verb like."
+      ],
+      [
+        "Choose the best topic sentence for a paragraph about dogs.",
+        "Dogs can be wonderful pets.",
+        ["My dog has brown fur.", "I fed my dog this morning.", "Dogs like to wag their tails."],
+        "A topic sentence introduces the main idea of a paragraph."
+      ],
+      [
+        "Choose the best ending sentence for a paragraph about reading.",
+        "That is why reading is one of my favorite activities.",
+        ["Books have pages.", "I read a book yesterday.", "My library is near school."],
+        "A concluding sentence gives the paragraph a clear ending."
+      ],
+      [
+        "Choose the sentence with correct capitalization.",
+        "On Friday, Sam visited Bangkok.",
+        ["on Friday, Sam visited Bangkok.", "On friday, sam visited bangkok.", "On Friday, Sam visited bangkok."],
+        "Days, names, and places begin with capital letters."
+      ],
+      [
+        "Choose the sentence with correct punctuation.",
+        "What is your favorite animal?",
+        ["What is your favorite animal.", "What is your favorite animal!", "what is your favorite animal?"],
+        "A question should end with a question mark."
+      ],
+      [
+        "Which is a complete sentence?",
+        "The baby slept peacefully.",
+        ["Because the baby was tired.", "Sleeping in the crib.", "After the long trip."],
+        "A complete sentence has a subject and a verb and expresses a complete thought."
+      ],
+      [
+        "Choose the best order for these ideas: 1. We put up our tent. 2. We arrived at the campsite. 3. We cooked dinner.",
+        "2, 1, 3",
+        ["1, 2, 3", "3, 2, 1", "2, 3, 1"],
+        "First arrive, then put up the tent, and then cook dinner."
+      ],
+      [
+        "Choose the best order for these ideas: 1. I brushed my teeth. 2. I woke up. 3. I ate breakfast.",
+        "2, 1, 3",
+        ["1, 2, 3", "3, 1, 2", "2, 3, 1"],
+        "First wake up, then brush teeth, then eat breakfast."
+      ],
+      [
+        "Choose the best word to complete the sentence: “Lina ran _____ because she was late.”",
+        "quickly",
+        ["quick", "quickness", "quicker"],
+        "Quickly is an adverb that tells how Lina ran."
+      ],
+      [
+        "Choose the best word to complete the sentence: “It was a _____ day.”",
+        "beautiful",
+        ["beautifully", "beauty", "beautifully day"],
+        "Beautiful is an adjective that describes the noun day."
+      ],
+      [
+        "Which sentence has an adverb of frequency?",
+        "I always pack my bag before school.",
+        ["I packed my bag yesterday.", "My bag is under the chair.", "I packed my blue bag."],
+        "Always tells how often something happens."
+      ],
+      [
+        "Which word is an adverb of time?",
+        "today",
+        ["blue", "behind", "teacher"],
+        "Today tells when something happens."
+      ],
+      [
+        "Which word is an adverb of place?",
+        "outside",
+        ["slowly", "tomorrow", "happy"],
+        "Outside tells where something happens."
+      ],
+      [
+        "Choose the best sentence.",
+        "He did not want to leave early.",
+        ["He did not wanted to leave early.", "He not wanted to leave early.", "He didn't wanted to leave early."],
+        "After did not, use the base verb want."
+      ],
+      [
+        "Which sentence is in the present continuous tense?",
+        "They are listening to music.",
+        ["They listen to music.", "They listened to music.", "They will listen to music."],
+        "Present continuous uses a form of be + a verb ending in -ing."
+      ]
+    ];
+
+    sentenceSkills.forEach(([question, correct, wrong, explanation]) => {
+      add("Sentence Skills", question, correct, wrong, explanation);
+    });
+
+    // The pool must contain exactly 300 questions.
+    console.assert(pool.length === 300, `Pool currently has ${pool.length} questions.`);
+
+    // ---------- Quiz App ----------
+    let roundQuestions = [];
+    let answers = [];
+    let currentQuestion = 0;
+
+    const quizCard = document.getElementById("quizCard");
+    const resultCard = document.getElementById("resultCard");
+    const questionNumber = document.getElementById("questionNumber");
+    const answeredCount = document.getElementById("answeredCount");
+    const progressBar = document.getElementById("progressBar");
+    const questionCategory = document.getElementById("questionCategory");
+    const questionText = document.getElementById("questionText");
+    const choices = document.getElementById("choices");
+    const previousBtn = document.getElementById("previousBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function startRound() {
+      roundQuestions = shuffle(pool).slice(0, 30);
+      answers = Array(30).fill(null);
+      currentQuestion = 0;
+
+      resultCard.classList.add("hidden");
+      quizCard.classList.remove("hidden");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const item = roundQuestions[currentQuestion];
+      const answered = answers.filter(answer => answer !== null).length;
+
+      questionNumber.textContent = `Question ${currentQuestion + 1} of 30`;
+      answeredCount.textContent = `Answered: ${answered} / 30`;
+      progressBar.style.width = `${((currentQuestion + 1) / 30) * 100}%`;
+
+      questionCategory.textContent = item.category;
+      questionText.innerHTML = item.question;
+      choices.innerHTML = "";
+
+      item.options.forEach((option, index) => {
+        const choice = document.createElement("button");
+        choice.className = "choice" + (answers[currentQuestion] === index ? " selected" : "");
+        choice.innerHTML = `<span class="choice-letter">${String.fromCharCode(65 + index)}</span>${option}`;
+        choice.addEventListener("click", () => {
+          answers[currentQuestion] = index;
+          renderQuestion();
+        });
+        choices.appendChild(choice);
+      });
+
+      previousBtn.disabled = currentQuestion === 0;
+      nextBtn.disabled = currentQuestion === 29;
+      submitBtn.textContent = answered === 30 ? "Check My Answers" : `Check My Answers (${answered}/30 answered)`;
+    }
+
+    previousBtn.addEventListener("click", () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentQuestion < 29) {
+        currentQuestion++;
+        renderQuestion();
+      }
+    });
+
+    submitBtn.addEventListener("click", () => {
+      const unanswered = answers.filter(answer => answer === null).length;
+
+      if (unanswered > 0) {
+        const continueAnyway = confirm(`You still have ${unanswered} unanswered question(s). Submit anyway?`);
+        if (!continueAnyway) return;
+      }
+
+      showResults();
+    });
+
+    function showResults() {
+      let score = 0;
+      const wrongItems = [];
+
+      roundQuestions.forEach((item, index) => {
+        if (answers[index] === item.answer) {
+          score++;
+        } else {
+          wrongItems.push({ item, chosen: answers[index], number: index + 1 });
+        }
+      });
+
+      quizCard.classList.add("hidden");
+      resultCard.classList.remove("hidden");
+
+      const percent = Math.round((score / 30) * 100);
+      document.getElementById("resultMessage").textContent =
+        percent >= 80
+          ? "Great work! Review your answers below and keep practicing."
+          : "Nice effort! Review the questions below to learn from any mistakes.";
+
+      document.getElementById("scoreCircle").innerHTML = `${score} / 30 <span>${percent}%</span>`;
+
+      const reviewArea = document.getElementById("reviewArea");
+      reviewArea.innerHTML = "";
+
+      if (wrongItems.length === 0) {
+        reviewArea.innerHTML = `
+          <h3 class="review-title">Answer Review</h3>
+          <div class="all-correct">Perfect score! You answered every question correctly.</div>
+        `;
+        return;
+      }
+
+      const title = document.createElement("h3");
+      title.className = "review-title";
+      title.textContent = `Review Incorrect Answers (${wrongItems.length})`;
+      reviewArea.appendChild(title);
+
+      wrongItems.forEach(({ item, chosen, number }) => {
+        const studentAnswer = chosen === null ? "No answer selected" : item.options[chosen];
+
+        const review = document.createElement("article");
+        review.className = "review-item";
+        review.innerHTML = `
+          <h3>${number}. ${item.question}</h3>
+          <p class="your-answer"><strong>Your answer:</strong> ${studentAnswer}</p>
+          <p class="correct-answer"><strong>Correct answer:</strong> ${item.correct}</p>
+          <p class="explanation"><strong>Why:</strong> ${item.explanation}</p>
+        `;
+        reviewArea.appendChild(review);
+      });
+    }
+
+    document.getElementById("newRoundBtn").addEventListener("click", startRound);
+
+    startRound();
+  </script>
+</body>
+</html>
