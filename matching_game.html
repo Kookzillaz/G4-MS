@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chinese Occupations Matching Game</title>
+<title>Chinese Activities Matching Game</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -78,13 +78,13 @@
     cursor: pointer;
     user-select: none;
     transition: all 0.2s ease;
-    min-height: 42px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .card.chinese {
-    font-size: 18px;
+    font-size: 20px;
   }
   .card.selected {
     border-color: #3b82f6;
@@ -159,25 +159,26 @@ const i18n = {
     title: "🎮 Matching Game",
     subtitle: "Tap Chinese Character (Left) and Pinyin (Right) to match.",
     reset: "🔄 Reset Game",
-    win: "🎉 Congratulations! All 8 matched!"
+    win: "🎉 Congratulations! All 9 matched!"
   },
   th: {
-    title: "🎮 จับคู่คำศัพท์อาชีพ",
+    title: "🎮 จับคู่คำศัพท์กิจวัตรและกิจกรรม",
     subtitle: "แตะคำอักษรจีน (ซ้าย) แล้วแตะคำอ่าน (ขวา) ให้ตรงกัน",
     reset: "🔄 เริ่มเล่นใหม่",
-    win: "🎉 ยินดีด้วย! จับคู่ถูกต้องทั้ง 8 คำ!"
+    win: "🎉 ยินดีด้วย! จับคู่ถูกต้องทั้ง 9 คำ!"
   }
 };
 
 const vocabList = [
-  { id: 1, zh: "警察", py: "jǐngchá", en: "Police", th: "ตำรวจ" },
-  { id: 2, zh: "厨师", py: "chúshī", en: "Chef", th: "พ่อครัว" },
-  { id: 3, zh: "司机", py: "sījī", en: "Driver", th: "คนขับรถ" },
-  { id: 4, zh: "医生", py: "yīshēng", en: "Doctor", th: "หมอ" },
-  { id: 5, zh: "护士", py: "hùshi", en: "Nurse", th: "พยาบาล" },
-  { id: 6, zh: "职员", py: "zhíyuán", en: "Company Employee", th: "พนักงานบริษัท" },
-  { id: 7, zh: "公务员", py: "gōngwùyuán", en: "Government Officer", th: "ข้าราชการ" },
-  { id: 8, zh: "全职妈妈", py: "quánzhí māma", en: "Housekeeper", th: "แม่บ้าน" }
+  { id: 1, zh: "跑步", py: "pǎobù", en: "Jogging", th: "วิ่งจ็อกกิ้ง" },
+  { id: 2, zh: "打电话", py: "dǎ diànhuà", en: "Make a phone call", th: "โทรศัพท์" },
+  { id: 3, zh: "上网", py: "shàngwǎng", en: "Surf the internet", th: "เล่นอินเทอร์เน็ต" },
+  { id: 4, zh: "玩游戏", py: "wán yóuxì", en: "Play games", th: "เล่นเกม" },
+  { id: 5, zh: "写作业", py: "xiě zuòyè", en: "Do homework", th: "ทำการบ้าน" },
+  { id: 6, zh: "洗衣服", py: "xǐ yīfu", en: "Do laundry", th: "ซักผ้า" },
+  { id: 7, zh: "学习", py: "xuéxí", en: "Study", th: "เรียน" },
+  { id: 8, zh: "看电视", py: "kàn diànshì", en: "Watch TV", th: "ดูโทรทัศน์" },
+  { id: 9, zh: "扫地", py: "sǎodì", en: "Sweep the floor", th: "กวาดบ้าน" }
 ];
 
 let selectedLeft = null;
@@ -197,7 +198,7 @@ function setLanguage(lang) {
 }
 
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+  return [...array].sort(() => Math.random() - 0.5);
 }
 
 function initGame() {
