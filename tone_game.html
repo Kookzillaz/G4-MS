@@ -97,14 +97,14 @@ let currentLang = 'en';
 
 const i18n = {
   en: {
-    paletteTitle: "Tap tone mark, then tap slot above vowel:",
+    paletteTitle: "Tap tone mark, then tap slot above vowel (tap again to clear):",
     checkBtn: "Check Answer", nextBtn: "Next ➔", restartBtn: "Play Again",
     correctMsg: (py) => `✨ Correct! (Pinyin: ${py})`,
     wrongMsg: "❌ Incorrect! Check the tone marks again.",
     doneTitle: "🎉 All Done!", doneDesc: "Great job practicing all 9 vocabulary words!"
   },
   th: {
-    paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:",
+    paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องสระ (แตะซ้ำเพื่อลบออก):",
     checkBtn: "ตรวจคำตอบ", nextBtn: "ข้อถัดไป ➔", restartBtn: "เริ่มเล่นใหม่อีกครั้ง",
     correctMsg: (py) => `✨ ถูกต้อง! (Pinyin: ${py})`,
     wrongMsg: "❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!",
@@ -164,20 +164,26 @@ function loadQuestion() {
 }
 
 function selectTone(tone, btn) {
-  selectedToneMark = tone;
-  document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
+  if (selectedToneMark === tone) {
+    selectedToneMark = null;
+    btn.classList.remove('selected');
+  } else {
+    selectedToneMark = tone;
+    document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
 }
 
 function applyToneToSlot(slot, idx) {
-  if (selectedToneMark) {
-    slot.innerText = selectedToneMark;
-    slot.classList.add('filled');
-    userTones[idx] = selectedToneMark;
-  } else {
+  // If the same tone is tapped again on the slot, or no tone selected, clear it
+  if (slot.innerText === selectedToneMark || !selectedToneMark) {
     slot.innerText = '';
     slot.classList.remove('filled');
     userTones[idx] = '';
+  } else {
+    slot.innerText = selectedToneMark;
+    slot.classList.add('filled');
+    userTones[idx] = selectedToneMark;
   }
 }
 
