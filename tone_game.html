@@ -75,8 +75,8 @@
 
   <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
-  <div class="zh-display" id="zh-display">警察</div>
-  <div class="meaning-display" id="meaning-display">Police</div>
+  <div class="zh-display" id="zh-display"></div>
+  <div class="meaning-display" id="meaning-display"></div>
 
   <div class="pinyin-container" id="pinyin-container"></div>
 
@@ -101,26 +101,27 @@ const i18n = {
     checkBtn: "Check Answer", nextBtn: "Next ➔", restartBtn: "Play Again",
     correctMsg: (py) => `✨ Correct! (Pinyin: ${py})`,
     wrongMsg: "❌ Incorrect! Check the tone marks again.",
-    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing all 8 vocabulary words!"
+    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing all 9 vocabulary words!"
   },
   th: {
     paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องวางบนสระ:",
     checkBtn: "ตรวจคำตอบ", nextBtn: "ข้อถัดไป ➔", restartBtn: "เริ่มเล่นใหม่อีกครั้ง",
     correctMsg: (py) => `✨ ถูกต้อง! (Pinyin: ${py})`,
     wrongMsg: "❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!",
-    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทั้ง 8 คำแล้ว!"
+    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทั้ง 9 คำแล้ว!"
   }
 };
 
 const vocabData = [
-  { zh: "警察", en: "Police", th: "ตำรวจ", fullPy: "jǐngchá", chars: [{ text: "j i n g", tone: "ˇ" }, { text: "c h a", tone: "ˊ" }] },
-  { zh: "厨师", en: "Chef", th: "พ่อครัว", fullPy: "chúshī", chars: [{ text: "c h u", tone: "ˊ" }, { text: "s h i", tone: "ˉ" }] },
-  { zh: "司机", en: "Driver", th: "คนขับรถ", fullPy: "sījī", chars: [{ text: "s i", tone: "ˉ" }, { text: "j i", tone: "ˉ" }] },
-  { zh: "医生", en: "Doctor", th: "หมอ", fullPy: "yīshēng", chars: [{ text: "y i", tone: "ˉ" }, { text: "s h e n g", tone: "ˉ" }] },
-  { zh: "护士", en: "Nurse", th: "พยาบาล", fullPy: "hùshi", chars: [{ text: "h u", tone: "ˋ" }, { text: "s h i", tone: "" }] },
-  { zh: "职员", en: "Company Employee", th: "พนักงานบริษัท", fullPy: "zhíyuán", chars: [{ text: "z h i", tone: "ˊ" }, { text: "y u a n", tone: "ˊ" }] },
-  { zh: "公务员", en: "Government Officer", th: "ข้าราชการ", fullPy: "gōngwùyuán", chars: [{ text: "g o n g", tone: "ˉ" }, { text: "w u", tone: "ˋ" }, { text: "y u a n", tone: "ˊ" }] },
-  { zh: "全职妈妈", en: "Housekeeper", th: "แม่บ้าน", fullPy: "quánzhí māma", chars: [{ text: "q u a n", tone: "ˊ" }, { text: "z h i", tone: "ˊ" }, { text: "m a", tone: "ˉ" }, { text: "m a", tone: "" }] }
+  { zh: "跑步", en: "Jogging", th: "วิ่งจ็อกกิ้ง", fullPy: "pǎobù", chars: [{ text: "p a o", tone: "ˇ" }, { text: "b u", tone: "ˋ" }] },
+  { zh: "打电话", en: "Make a phone call", th: "โทรศัพท์", fullPy: "dǎ diànhuà", chars: [{ text: "d a", tone: "ˇ" }, { text: "d i a n", tone: "ˋ" }, { text: "h u a", tone: "ˋ" }] },
+  { zh: "上网", en: "Surf the internet", th: "เล่นอินเทอร์เน็ต", fullPy: "shàngwǎng", chars: [{ text: "s h a n g", tone: "ˋ" }, { text: "w a n g", tone: "ˇ" }] },
+  { zh: "玩游戏", en: "Play games", th: "เล่นเกม", fullPy: "wán yóuxì", chars: [{ text: "w a n", tone: "ˊ" }, { text: "y o u", tone: "ˊ" }, { text: "x i", tone: "ˋ" }] },
+  { zh: "写作业", en: "Do homework", th: "ทำการบ้าน", fullPy: "xiě zuòyè", chars: [{ text: "x i e", tone: "ˇ" }, { text: "z u o", tone: "ˋ" }, { text: "y e", tone: "ˋ" }] },
+  { zh: "洗衣服", en: "Do laundry", th: "ซักผ้า", fullPy: "xǐ yīfu", chars: [{ text: "x i", tone: "ˇ" }, { text: "y i", tone: "ˉ" }, { text: "f u", tone: "" }] },
+  { zh: "学习", en: "Study", th: "เรียน", fullPy: "xuéxí", chars: [{ text: "x u e", tone: "ˊ" }, { text: "x i", tone: "ˊ" }] },
+  { zh: "看电视", en: "Watch TV", th: "ดูโทรทัศน์", fullPy: "kàn diànshì", chars: [{ text: "k a n", tone: "ˋ" }, { text: "d i a n", tone: "ˋ" }, { text: "s h i", tone: "ˋ" }] },
+  { zh: "扫地", en: "Sweep the floor", th: "กวาดบ้าน", fullPy: "sǎodì", chars: [{ text: "s a o", tone: "ˇ" }, { text: "d i", tone: "ˋ" }] }
 ];
 
 let currentIndex = 0, selectedToneMark = null, userTones = [];
