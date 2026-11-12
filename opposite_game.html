@@ -196,7 +196,7 @@ function initGame() {
   matchedCount = 0;
 
   // Pick 4 random pairs per round
-  currentRoundPairs = shuffle([...oppositePairs]).slice(0, 4);
+  currentRoundPairs = shuffle([...oppositePairs]).slice(0, 8);
   
   let leftItems = [];
   let rightItems = [];
@@ -257,7 +257,7 @@ function checkMatch() {
       selectedRight = null;
       matchedCount++;
       
-      if (matchedCount === 4) {
+      if (matchedCount === 8) {
         document.getElementById('status-text.innerText') = '🎉 Excellent! All opposite pairs matched!';
         statusText.innerText = '🎉 ยินดีด้วย! จับคู่คำตรงข้ามครบทุกคู่แล้ว!';
       }
