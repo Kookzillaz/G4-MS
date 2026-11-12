@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Pinyin Bubble Pop</title>
+<script src="vocab.js"></script>
 <style>
   * { box-sizing: border-box; touch-action: manipulation; }
   html, body {
@@ -173,6 +174,7 @@
 
 <script>
 let currentLang = 'en';
+const vocabList = sharedVocabList;
 
 const i18n = {
   en: {
@@ -190,21 +192,6 @@ const i18n = {
     finalScore: (s) => `คุณทำได้ ${s} คะแนน!`
   }
 };
-
-const vocabList = [
-  { zh: "爷爷", py: "yéye", en: "Grandfather", th: "คุณปู่" },
-  { zh: "奶奶", py: "nǎinai", en: "Grandmother", th: "คุณย่า" },
-  { zh: "北京", py: "Běijīng", en: "Beijing", th: "ปักกิ่ง" },
-  { zh: "上海", py: "Shànghǎi", en: "Shanghai", th: "เซี่ยงไฮ้" },
-  { zh: "快 / 慢", py: "kuài / màn", en: "Fast / Slow", th: "เร็ว / ช้า" },
-  { zh: "多少", py: "duō shǎo", en: "More / Less", th: "มาก / น้อย" },
-  { zh: "胖 / 瘦", py: "pàng / shòu", en: "Fat / Thin", th: "อ้วน / ผอม" },
-  { zh: "大 / 小", py: "dà / xiǎo", en: "Big / Small", th: "ใหญ่ / เล็ก" },
-  { zh: "长 / 短", py: "cháng / duǎn", en: "Long / Short", th: "ยาว / สั้น" },
-  { zh: "远 / 近", py: "yuǎn / jìn", en: "Far / Near", th: "ไกล / ใกล้" },
-  { zh: "高 / 矮", py: "gāo / ǎi", en: "Tall / Short", th: "สูง / เตี้ย" },
-  { zh: "冷 / 热", py: "lěng / rè", en: "Cold / Hot", th: "หนาว / ร้อน" }
-];
 
 let score = 0, lives = 3, baseSpeedFactor = 1, currentSpeedMultiplier = 1;
 let currentWord = null, animId = null, targetPos = 0, speedTimer = null;

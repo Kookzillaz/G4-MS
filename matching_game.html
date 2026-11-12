@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chinese Spelling Test Matching Game</title>
+<script src="vocab.js"></script>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -153,36 +154,22 @@
 
 <script>
 let currentLang = 'en';
+const vocabList = sharedVocabList;
 
 const i18n = {
   en: {
     title: "🎮 Matching Game",
     subtitle: "Tap Chinese Character (Left) and Pinyin (Right) to match.",
     reset: "🔄 Reset Game",
-    win: "🎉 Congratulations! All 12 matched!"
+    win: (count) => `🎉 Congratulations! All ${count} matched!`
   },
   th: {
     title: "🎮 จับคู่คำศัพท์เตรียมสอบ",
     subtitle: "แตะคำอักษรจีน (ซ้าย) แล้วแตะคำอ่าน (ขวา) ให้ตรงกัน",
     reset: "🔄 เริ่มเล่นใหม่",
-    win: "🎉 ยินดีด้วย! จับคู่ถูกต้องทั้ง 12 คำ!"
+    win: (count) => `🎉 ยินดีด้วย! จับคู่ถูกต้องทั้ง ${count} คำ!`
   }
 };
-
-const vocabList = [
-  { id: 1, zh: "爷爷", py: "yéye", en: "Grandfather", th: "คุณปู่" },
-  { id: 2, zh: "奶奶", py: "nǎinai", en: "Grandmother", th: "คุณย่า" },
-  { id: 3, zh: "北京", py: "Běijīng", en: "Beijing", th: "ปักกิ่ง" },
-  { id: 4, zh: "上海", py: "Shànghǎi", en: "Shanghai", th: "เซี่ยงไฮ้" },
-  { id: 5, zh: "快 / 慢", py: "kuài / màn", en: "Fast / Slow", th: "เร็ว / ช้า" },
-  { id: 6, zh: "多少", py: "duō shǎo", en: "More / Less", th: "มาก / น้อย" },
-  { id: 7, zh: "胖 / 瘦", py: "pàng / shòu", en: "Fat / Thin", th: "อ้วน / ผอม" },
-  { id: 8, zh: "大 / 小", py: "dà / xiǎo", en: "Big / Small", th: "ใหญ่ / เล็ก" },
-  { id: 9, zh: "长 / 短", py: "cháng / duǎn", en: "Long / Short", th: "ยาว / สั้น" },
-  { id: 10, zh: "远 / 近", py: "yuǎn / jìn", en: "Far / Near", th: "ไกล / ใกล้" },
-  { id: 11, zh: "高 / 矮", py: "gāo / ǎi", en: "Tall / Short", th: "สูง / เตี้ย" },
-  { id: 12, zh: "冷 / 热", py: "lěng / rè", en: "Cold / Hot", th: "หนาว / ร้อน" }
-];
 
 let selectedLeft = null;
 let selectedRight = null;
@@ -268,7 +255,7 @@ function checkMatch() {
       matchedCount++;
       
       if (matchedCount === vocabList.length) {
-        document.getElementById('status-text').innerText = i18n[currentLang].win;
+        document.getElementById('status-text').innerText = i18n[currentLang].win(vocabList.length);
       }
     } else {
       const leftObj = selectedLeft;

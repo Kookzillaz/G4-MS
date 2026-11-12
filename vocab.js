@@ -1,0 +1,22 @@
+const sharedVocabList = [
+  { id: 1, zh: "爷爷", py: "yéye", en: "Grandfather", th: "คุณปู่", fullPy: "yéye", chars: [{ text: "y e", tone: "ˊ" }, { text: "y e", tone: "" }] },
+  { id: 2, zh: "奶奶", py: "nǎinai", en: "Grandmother", th: "คุณย่า", fullPy: "nǎinai", chars: [{ text: "n a i", tone: "ˇ" }, { text: "n a i", tone: "" }] },
+  { id: 3, zh: "北京", py: "Běijīng", en: "Beijing", th: "ปักกิ่ง", fullPy: "Běijīng", chars: [{ text: "B e i", tone: "ˇ" }, { text: "j i n g", tone: "ˉ" }] },
+  { id: 4, zh: "上海", py: "Shànghǎi", en: "Shanghai", th: "เซี่ยงไฮ้", fullPy: "Shànghǎi", chars: [{ text: "S h a n g", tone: "ˋ" }, { text: "h a i", tone: "ˇ" }] },
+  { id: 5, zh: "快", py: "kuài", en: "Fast", th: "เร็ว", fullPy: "kuài", chars: [{ text: "k u a i", tone: "ˋ" }] },
+  { id: 6, zh: "慢", py: "màn", en: "Slow", th: "ช้า", fullPy: "màn", chars: [{ text: "m a n", tone: "ˋ" }] },
+  { id: 7, zh: "多", py: "duō", en: "More / Many", th: "มาก", fullPy: "duō", chars: [{ text: "d u o", tone: "ˉ" }] },
+  { id: 8, zh: "少", py: "shǎo", en: "Less / Few", th: "น้อย", fullPy: "shǎo", chars: [{ text: "s h a o", tone: "ˇ" }] },
+  { id: 9, zh: "胖", py: "pàng", en: "Fat", th: "อ้วน", fullPy: "pàng", chars: [{ text: "p a n g", tone: "ˋ" }] },
+  { id: 10, zh: "瘦", py: "shòu", en: "Thin", th: "ผอม", fullPy: "shòu", chars: [{ text: "s h o u", tone: "ˋ" }] },
+  { id: 11, zh: "大", py: "dà", en: "Big", th: "ใหญ่", fullPy: "dà", chars: [{ text: "d a", tone: "ˋ" }] },
+  { id: 12, zh: "小", py: "xiǎo", en: "Small", th: "เล็ก", fullPy: "xiǎo", chars: [{ text: "x i a o", tone: "ˇ" }] },
+  { id: 13, zh: "长", py: "cháng", en: "Long", th: "ยาว", fullPy: "cháng", chars: [{ text: "c h a n g", tone: "ˊ" }] },
+  { id: 14, zh: "短", py: "duǎn", en: "Short (length)", th: "สั้น", fullPy: "duǎn", chars: [{ text: "d u a n", tone: "ˇ" }] },
+  { id: 15, zh: "远", py: "yuǎn", en: "Far", th: "ไกล", fullPy: "yuǎn", chars: [{ text: "y u a n", tone: "ˇ" }] },
+  { id: 16, zh: "近", py: "jìn", en: "Near", th: "ใกล้", fullPy: "jìn", chars: [{ text: "j i n", tone: "ˋ" }] },
+  { id: 17, zh: "高", py: "gāo", en: "Tall", th: "สูง", fullPy: "gāo", chars: [{ text: "g a o", tone: "ˉ" }] },
+  { id: 18, zh: "矮", py: "ǎi", en: "Short (height)", th: "เตี้ย", fullPy: "ǎi", chars: [{ text: "a i", tone: "ˇ" }] },
+  { id: 19, zh: "冷", py: "lěng", en: "Cold", th: "หนาว", fullPy: "lěng", chars: [{ text: "l e n g", tone: "ˇ" }] },
+  { id: 20, zh: "热", py: "rè", en: "Hot", th: "ร้อน", fullPy: "rè", chars: [{ text: "r e", tone: "ˋ" }] }
+];

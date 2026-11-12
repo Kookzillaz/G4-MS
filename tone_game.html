@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Pinyin Tone Drag & Drop</title>
+<script src="vocab.js"></script>
 <style>
   * { box-sizing: border-box; touch-action: manipulation; }
   body {
@@ -94,6 +95,7 @@
 
 <script>
 let currentLang = 'en';
+const vocabData = sharedVocabList;
 
 const i18n = {
   en: {
@@ -101,31 +103,16 @@ const i18n = {
     checkBtn: "Check Answer", nextBtn: "Next ➔", restartBtn: "Play Again",
     correctMsg: (py) => `✨ Correct! (Pinyin: ${py})`,
     wrongMsg: "❌ Incorrect! Check the tone marks again.",
-    doneTitle: "🎉 All Done!", doneDesc: "Great job practicing all 12 vocabulary words!"
+    doneTitle: "🎉 All Done!", doneDesc: (count) => `Great job practicing all ${count} vocabulary words!`
   },
   th: {
     paletteTitle: "แตะเลือกวรรณยุกต์ แล้วแตะช่องสระ (แตะซ้ำเพื่อลบออก):",
     checkBtn: "ตรวจคำตอบ", nextBtn: "ข้อถัดไป ➔", restartBtn: "เริ่มเล่นใหม่อีกครั้ง",
     correctMsg: (py) => `✨ ถูกต้อง! (Pinyin: ${py})`,
     wrongMsg: "❌ ยังไม่ถูกต้อง ลองเช็กวรรณยุกต์อีกครั้งครับ!",
-    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: "ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทั้ง 12 คำแล้ว!"
+    doneTitle: "🎉 สำเร็จแล้ว!", doneDesc: (count) => `ยินดีด้วย! ซ้อมจำวรรณยุกต์ครบทั้ง ${count} คำแล้ว!`
   }
 };
-
-const vocabData = [
-  { zh: "爷爷", en: "Grandfather", th: "คุณปู่", fullPy: "yéye", chars: [{ text: "y e", tone: "ˊ" }, { text: "y e", tone: "" }] },
-  { zh: "奶奶", en: "Grandmother", th: "คุณย่า", fullPy: "nǎinai", chars: [{ text: "n a i", tone: "ˇ" }, { text: "n a i", tone: "" }] },
-  { zh: "北京", en: "Beijing", th: "ปักกิ่ง", fullPy: "Běijīng", chars: [{ text: "B e i", tone: "ˇ" }, { text: "j i n g", tone: "ˉ" }] },
-  { zh: "上海", en: "Shanghai", th: "เซี่ยงไฮ้", fullPy: "Shànghǎi", chars: [{ text: "S h a n g", tone: "ˋ" }, { text: "h a i", tone: "ˇ" }] },
-  { zh: "快 / 慢", en: "Fast / Slow", th: "เร็ว / ช้า", fullPy: "kuài / màn", chars: [{ text: "k u a i", tone: "ˋ" }, { text: "m a n", tone: "ˋ" }] },
-  { zh: "多少", en: "More / Less", th: "มาก / น้อย", fullPy: "duō shǎo", chars: [{ text: "d u o", tone: "ˉ" }, { text: "s h a o", tone: "ˇ" }] },
-  { zh: "胖 / 瘦", en: "Fat / Thin", th: "อ้วน / ผอม", fullPy: "pàng / shòu", chars: [{ text: "p a n g", tone: "ˋ" }, { text: "s h o u", tone: "ˋ" }] },
-  { zh: "大 / 小", en: "Big / Small", th: "ใหญ่ / เล็ก", fullPy: "dà / xiǎo", chars: [{ text: "d a", tone: "ˋ" }, { text: "x i a o", tone: "ˇ" }] },
-  { zh: "长 / 短", en: "Long / Short", th: "ยาว / สั้น", fullPy: "cháng / duǎn", chars: [{ text: "c h a n g", tone: "ˊ" }, { text: "d u a n", tone: "ˇ" }] },
-  { zh: "远 / 近", en: "Far / Near", th: "ไกล / ใกล้", fullPy: "yuǎn / jìn", chars: [{ text: "y u a n", tone: "ˇ" }, { text: "j i n", tone: "ˋ" }] },
-  { zh: "高 / 矮", en: "Tall / Short", th: "สูง / เตี้ย", fullPy: "gāo / ǎi", chars: [{ text: "g a o", tone: "ˉ" }, { text: "a i", tone: "ˇ" }] },
-  { zh: "冷 / 热", en: "Cold / Hot", th: "หนาว / ร้อน", fullPy: "lěng / rè", chars: [{ text: "l e n g", tone: "ˇ" }, { text: "r e", tone: "ˋ" }] }
-];
 
 let currentIndex = 0, selectedToneMark = null, userTones = [];
 
@@ -208,8 +195,9 @@ function checkAnswer() {
 function nextQuestion() {
   currentIndex++;
   if (currentIndex >= vocabData.length) {
+    document.getElementById('progress').style.width = '100%';
     document.getElementById('zh-display').innerText = '🎉';
-    document.getElementById('meaning-display').innerText = i18n[currentLang].doneDesc;
+    document.getElementById('meaning-display').innerText = i18n[currentLang].doneDesc(vocabData.length);
     document.getElementById('pinyin-container').innerHTML = '';
     document.getElementById('feedback').innerText = '';
     document.getElementById('action-btn').innerText = i18n[currentLang].restartBtn;
