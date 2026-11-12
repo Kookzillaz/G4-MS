@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinese Opposites Matching Game</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .game-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .lang-switch {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
+  .lang-btn {
+    background: #e2e8f0;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .lang-btn.active {
+    background: #0284c7;
+    color: white;
+  }
+  h2 {
+    text-align: center;
+    color: #0369a1;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 18px;
+  }
+  p.subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .card .zh-text {
+    font-size: 20px;
+    color: #0369a1;
+    margin-bottom: 2px;
+  }
+  .card .py-text {
+    font-size: 13px;
+    color: #64748b;
+  }
+  .card.selected {
+    border-color: #0284c7;
+    background-color: #e0f2fe;
+  }
+  .card.selected .zh-text, .card.selected .py-text {
+    color: #0369a1;
+  }
+  .card.matched {
+    border-color: #22c55e;
+    background-color: #f0fdf4;
+    cursor: default;
+    opacity: 0.5;
+  }
+  .card.matched .zh-text, .card.matched .py-text {
+    color: #15803d;
+  }
+  .card.wrong {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    animation: shake 0.3s;
+  }
+  .card.wrong .zh-text, .card.wrong .py-text {
+    color: #b91c1c;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .status {
+    text-align: center;
+    margin-top: 12px;
+    font-weight: bold;
+    color: #10b981;
+    font-size: 16px;
+    min-height: 22px;
+  }
+  button.reset-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    background-color: #0284c7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="lang-switch" style="display:none;"></div>
+  
+  <h2 id="title">🔄 Opposites Matching Game</h2>
+  <p class="subtitle" id="subtitle">Match the opposite Chinese words by Pinyin & Character!</p>
+  
+  <div class="grid">
+    <div class="column" id="left-col"></div>
+    <div class="column" id="right-col"></div>
+  </div>
+
+  <div class="status" id="status-text"></div>
+  <button class="reset-btn" id="reset-btn" onclick="initGame()">🔄 New Round</button>
+</div>
+
+<script>
+// Hardcoded opposite pairs with Pinyin instead of meaning (8 pairs total, pick 4 per round)
+const oppositePairs = [
+  { group: 1, a: { zh: "快", py: "kuài" }, b: { zh: "慢", py: "màn" } },
+  { group: 2, a: { zh: "多", py: "duō" }, b: { zh: "少", py: "shǎo" } },
+  { group: 3, a: { zh: "胖", py: "pàng" }, b: { zh: "瘦", py: "shòu" } },
+  { group: 4, a: { zh: "大", py: "dà" }, b: { zh: "小", py: "xiǎo" } },
+  { group: 5, a: { zh: "长", py: "cháng" }, b: { zh: "短", py: "duǎn" } },
+  { group: 6, a: { zh: "远", py: "yuǎn" }, b: { zh: "近", py: "jìn" } },
+  { group: 7, a: { zh: "高", py: "gāo" }, b: { zh: "矮", py: "ǎi" } },
+  { group: 8, a: { zh: "冷", py: "lěng" }, b: { zh: "热", py: "rè" } }
+];
+
+let selectedLeft = null;
+let selectedRight = null;
+let matchedCount = 0;
+let currentRoundPairs = [];
+
+function shuffle(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+function initGame() {
+  const leftCol = document.getElementById('left-col');
+  const rightCol = document.getElementById('right-col');
+  const statusText = document.getElementById('status-text');
+  
+  leftCol.innerHTML = '';
+  rightCol.innerHTML = '';
+  statusText.innerText = '';
+  selectedLeft = null;
+  selectedRight = null;
+  matchedCount = 0;
+
+  // Pick 4 random pairs per round
+  currentRoundPairs = shuffle([...oppositePairs]).slice(0, 4);
+  
+  let leftItems = [];
+  let rightItems = [];
+
+  currentRoundPairs.forEach(pair => {
+    leftItems.push({ ...pair.a, groupId: pair.group });
+    rightItems.push({ ...pair.b, groupId: pair.group });
+  });
+
+  const shuffledLeft = shuffle(leftItems);
+  const shuffledRight = shuffle(rightItems);
+
+  shuffledLeft.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="zh-text">${item.zh}</div><div class="py-text">${item.py}</div>`;
+    card.dataset.groupId = item.groupId;
+    card.onclick = () => selectCard(card, 'left');
+    leftCol.appendChild(card);
+  });
+
+  shuffledRight.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="zh-text">${item.zh}</div><div class="py-text">${item.py}</div>`;
+    card.dataset.groupId = item.groupId;
+    card.onclick = () => selectCard(card, 'right');
+    rightCol.appendChild(card);
+  });
+}
+
+function selectCard(card, side) {
+  if (card.classList.contains('matched')) return;
+
+  if (side === 'left') {
+    document.querySelectorAll('#left-col .card').forEach(c => {
+      if (!c.classList.contains('matched')) c.className = 'card';
+    });
+    card.classList.add('selected');
+    selectedLeft = card;
+  } else {
+    document.querySelectorAll('#right-col .card').forEach(c => {
+      if (!c.classList.contains('matched')) c.className = 'card';
+    });
+    card.classList.add('selected');
+    selectedRight = card;
+  }
+
+  checkMatch();
+}
+
+function checkMatch() {
+  if (selectedLeft && selectedRight) {
+    if (selectedLeft.dataset.groupId === selectedRight.dataset.groupId) {
+      selectedLeft.className = 'card matched';
+      selectedRight.className = 'card matched';
+      selectedLeft = null;
+      selectedRight = null;
+      matchedCount++;
+      
+      if (matchedCount === 4) {
+        document.getElementById('status-text.innerText') = '🎉 Excellent! All opposite pairs matched!';
+        statusText.innerText = '🎉 ยินดีด้วย! จับคู่คำตรงข้ามครบทุกคู่แล้ว!';
+      }
+    } else {
+      const leftObj = selectedLeft;
+      const rightObj = selectedRight;
+      leftObj.className = 'card wrong';
+      rightObj.className = 'card wrong';
+      setTimeout(() => {
+        if (!leftObj.classList.contains('matched')) leftObj.className = 'card';
+        if (!rightObj.classList.contains('matched')) rightObj.className = 'card';
+      }, 500);
+      selectedLeft = null;
+      selectedRight = null;
+    }
+  }
+}
+
+initGame();
+</script>
+</body>
+</html>
